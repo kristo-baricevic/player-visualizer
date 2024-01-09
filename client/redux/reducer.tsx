@@ -2,17 +2,17 @@ import { Action } from "redux";
 import { AudioActions, AudioActionTypes } from "./actionTypes";
 
 interface SongData {
-    id: number;
-    title: string;
-    samples: {
-      parts: {
-        text: string;
-        link?: string;
-      }[];
+  id: number;
+  title: string;
+  samples: {
+    parts: {
+      text: string;
+      link?: string;
     }[];
-  }
+  }[];
+}
 
-interface AudioState {
+export interface AudioState {
   currentSongIndex: number;
   trackLinerNotes: SongData[] | null;
   isMuted: boolean[];
@@ -91,7 +91,7 @@ const audioReducer = (
       return { ...state, volume: setVolumeAction.payload };
 
     case AudioActionTypes.FETCH_SONGS_SUCCESS:
-        if ("payload" in action && Array.isArray(action.payload)) {
+      if ("payload" in action && Array.isArray(action.payload)) {
         return {
           ...state,
           trackLinerNotes: action.payload,

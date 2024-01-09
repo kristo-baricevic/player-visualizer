@@ -3,8 +3,10 @@
 import React, { createContext, useState, useCallback, useEffect } from "react";
 import { fetchSongs } from "@/redux/actions";
 import { useDispatch } from 'react-redux';
-
 import { Howl } from "howler";
+import { ThunkDispatch } from 'redux-thunk';
+import { RootState } from '../store';
+import { Action } from 'redux';
 
 // Define the shape of your context state
 interface AudioContextState {
@@ -309,8 +311,7 @@ export const AudioPlayerContext = createContext<AudioContextState | undefined>(
 );
 
 export const AudioProvider: React.FC<AudioProviderProps> = ({ children }) => {
-  const dispatch = useDispatch();
-  // const [message, setMessage] = useState(null);
+  const dispatch: ThunkDispatch<RootState, unknown, Action<string>> = useDispatch();
 
   const [currentTrack, setCurrentTrack] = useState<CurrentTrackState>({
     song: null,

@@ -1,20 +1,13 @@
 import { ThunkAction } from "redux-thunk";
 import { Action } from "redux";
 import { AudioActionTypes } from "./actionTypes";
+import { AudioState } from "./reducer";
+
 
 type ThunkResult<R> = ThunkAction<R, RootState, undefined, Action<string>>;
 
 export interface RootState {
-  audio: {
-    isPlaying: boolean;
-    currentSongIndex: number;
-    songData: any[];
-    isLoading: boolean;
-    isMuted: boolean[];
-    trackLinerNotes: SongData[];
-    trackIndex: number;
-    toggleMuteTrack: (trackIndex: number) => void;
-  };
+  audio: AudioState;
 }
 
 interface SongData {
@@ -55,7 +48,7 @@ export const fetchSongsFailure = () => ({
   type: AudioActionTypes.FETCH_SONGS_FAILURE,
 });
 
-export const fetchSongs = () => {
+export const fetchSongs = (): ThunkAction<void, RootState, unknown, Action<string>> => {
   return (dispatch: any) => {
     fetch("http://localhost:8080/api/songs")
       .then((response) => {
