@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useContext } from "react";
 // import BackgroundAnimation from "@/components/BackgroundAnimation";
 import MultiTrackPlayer from "@/components/MultiTrackPlayer";
-import LinerNotes from "@/components/LinerNotes";
-import ErrorBoundary from "@/components/ErrorBoundary";
-import { AudioPlayerContext } from "@/components/AudioPlayerContext";
-import { animationForSong, clearAnimations } from "@/utils/animations";
+import LinerNotes from "../components/LinerNotes";
+import ErrorBoundary from "../components/ErrorBoundary";
+import { AudioPlayerContext } from "../components/AudioPlayerContext";
+import { animationForSong, clearAnimations } from "../utils/animations";
 
 function Index() {
   const audio = useContext(AudioPlayerContext);
@@ -12,12 +12,10 @@ function Index() {
   useEffect(() => {
     if (audio) {
       try {
-        if (audio) {
           const { currentSongIndex, loadNewSong } = audio;
           clearAnimations();
           animationForSong(120, 0, 0);
           loadNewSong(currentSongIndex);
-        }
       } catch (error) {
         console.error("Error in Index component useEffect:", error);
       }

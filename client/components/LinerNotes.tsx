@@ -1,8 +1,8 @@
 import { fetchSongs } from "@/redux/actions";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, AppDispatch } from "@/store";
-import ErrorBoundary from "@/components/ErrorBoundary";
+import { RootState, AppDispatch } from "../store";
+import ErrorBoundary from "../components/ErrorBoundary";
 
 export const useAppDispatch: () => AppDispatch = useDispatch;
 

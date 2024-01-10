@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useState, useCallback, useEffect } from "react";
-import { fetchSongs } from "@/redux/actions";
+import { fetchSongs } from "../redux/actions";
 import { useDispatch } from "react-redux";
 import { Howl } from "howler";
 import { AppDispatch } from "../store";
