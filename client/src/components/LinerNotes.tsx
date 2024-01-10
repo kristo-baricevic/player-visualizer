@@ -1,20 +1,20 @@
-import { fetchSongs } from "@/redux/actions";
+import { fetchSongs } from "../redux/actions";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../store";
-import ErrorBoundary from "../components/ErrorBoundary";
+import ErrorBoundary from "./ErrorBoundary";
 
 export const useAppDispatch: () => AppDispatch = useDispatch;
 
 const LinerNotes = () => {
   const dispatch = useAppDispatch();
   const trackLinerNotes = useSelector(
-    (state: RootState) => state.audio.trackLinerNotes
+    (state: RootState) => state?.audio?.trackLinerNotes
   );
   const currentSongIndex = useSelector(
-    (state: RootState) => state.audio.currentSongIndex
+    (state: RootState) => state?.audio?.currentSongIndex
   );
-  const error = useSelector((state: RootState) => state.audio.error);
+  const error = useSelector((state: RootState) => state?.audio?.error);
 
   useEffect(() => {
     dispatch(fetchSongs());
@@ -32,9 +32,9 @@ const LinerNotes = () => {
 
   const samplesList =
     currentSong && Array.isArray(currentSong.samples) ? (
-      currentSong.samples.map((sample, sampleIndex) => (
+      currentSong?.samples?.map((sample, sampleIndex) => (
         <p key={sampleIndex}>
-          {sample.parts.map((part, partIndex) =>
+          {sample?.parts?.map((part, partIndex) =>
             part.link ? (
               <a key={partIndex} href={part.link} className="text-sky-400">
                 {part.text}

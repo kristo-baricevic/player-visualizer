@@ -9,16 +9,12 @@ const songRouter = require("./controllers/songController");
 app.use(express.static(path.join(__dirname, "public")));
 
 const corsOptions = {
-  origin: "http://localhost:3000", // or use '*' to allow all origins
+  origin: "http://localhost:3000", 
   optionsSuccessStatus: 200,
 };
 app.use(cors(corsOptions));
 
-app.get("/api/home", (req, res) => {
-  res.json({ message: "Like this video!", people: ["Arpan", "Jack", "Barry"] });
-});
-
-app.use("/api", songRouter);
+app.use("/server-api", songRouter);
 
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);

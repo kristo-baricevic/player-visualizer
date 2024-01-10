@@ -1,4 +1,3 @@
-import { Action } from "redux";
 import { AudioActions, AudioActionTypes } from "./actionTypes";
 
 interface SongData {

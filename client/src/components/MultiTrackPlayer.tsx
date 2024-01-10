@@ -12,7 +12,7 @@ import {
   faMicrophone,
   faSpinner,
 } from "@fortawesome/free-solid-svg-icons";
-import ErrorBoundary from "@/components/ErrorBoundary";
+import ErrorBoundary from "@/src/components/ErrorBoundary";
 
 declare global {
   interface Window {
@@ -106,7 +106,7 @@ const MultiTrackPlayer = () => {
             <div className="flex flex-col px-2">
               {isValidIndex && (
                 <h4 className="flex" ref={titleRef}>
-                  {trackLinerNotes[currentSongIndex].title}
+                  {trackLinerNotes[currentSongIndex]?.title}
                 </h4>
               )}
 

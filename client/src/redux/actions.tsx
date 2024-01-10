@@ -57,7 +57,7 @@ export const fetchSongs = (): ThunkAction<
 > => {
   return (dispatch) => {
     try {
-      fetch("http://localhost:8080/api/songs")
+      fetch("http://localhost:8080/server-api/songs")
         .then((response) => {
           if (!response.ok) {
             throw new Error("Network response was not ok");

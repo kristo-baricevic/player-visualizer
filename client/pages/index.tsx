@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useContext } from "react";
 // import BackgroundAnimation from "@/components/BackgroundAnimation";
-import MultiTrackPlayer from "@/components/MultiTrackPlayer";
-import LinerNotes from "../components/LinerNotes";
-import ErrorBoundary from "../components/ErrorBoundary";
-import { AudioPlayerContext } from "../components/AudioPlayerContext";
-import { animationForSong, clearAnimations } from "../utils/animations";
+import MultiTrackPlayer from "../src/components/MultiTrackPlayer";
+import LinerNotes from "../src/components/LinerNotes";
+import ErrorBoundary from "../src/components/ErrorBoundary";
+import { AudioPlayerContext } from "../src/components/AudioPlayerContext";
+import { animationForSong, clearAnimations } from "../src/utils/animations";
 
 function Index() {
   const audio = useContext(AudioPlayerContext);
