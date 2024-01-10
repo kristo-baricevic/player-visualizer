@@ -2,6 +2,7 @@ import { fetchSongs } from "@/redux/actions";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "@/store";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 export const useAppDispatch: () => AppDispatch = useDispatch;
 
@@ -48,12 +49,14 @@ const LinerNotes = () => {
       <p>No samples available.</p>
     );
 
-    return (
+  return (
+    <ErrorBoundary>
       <div className="sample-info mt-10 px-6">
         <h3>Samples used in &rdquo;{currentSong.title}&rdquo;: </h3>
         {samplesList}
       </div>
-    );
+    </ErrorBoundary>
+  );
 };
 
 export default LinerNotes;

@@ -12,6 +12,7 @@ import {
   faMicrophone,
   faSpinner,
 } from "@fortawesome/free-solid-svg-icons";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 declare global {
   interface Window {
@@ -86,105 +87,107 @@ const MultiTrackPlayer = () => {
   };
 
   return (
-    <>
-      <div
-        ref={musicContainerRef}
-        className="music-container"
-        id="music-container"
-      >
-        <div className="music-info">
-          {isValidIndex && (
-            <img
-              className="cover-image"
-              src={`http://localhost:8080/public/images/cover${currentSongIndex}.png`}
-              onError={(e) => (e.currentTarget.src = "cover1.png")}
-              alt="album art"
-            />
-          )}
-          <div className="flex flex-col px-2">
+    <ErrorBoundary>
+      <>
+        <div
+          ref={musicContainerRef}
+          className="music-container"
+          id="music-container"
+        >
+          <div className="music-info">
             {isValidIndex && (
-              <h4 className="flex" ref={titleRef}>
-                {trackLinerNotes[currentSongIndex].title}
-              </h4>
+              <img
+                className="cover-image"
+                src={`http://localhost:8080/public/images/cover${currentSongIndex}.png`}
+                onError={(e) => (e.currentTarget.src = "cover1.png")}
+                alt="album art"
+              />
             )}
+            <div className="flex flex-col px-2">
+              {isValidIndex && (
+                <h4 className="flex" ref={titleRef}>
+                  {trackLinerNotes[currentSongIndex].title}
+                </h4>
+              )}
 
-            {isValidIndex && (
-              <div
-                className="progress-container flex"
-                ref={progressContainerRef}
-                onClick={setProgress}
-              >
+              {isValidIndex && (
                 <div
-                  className="progress"
-                  ref={progressRef}
-                  style={{ width: `${progress}%` }}
-                ></div>
-              </div>
-            )}
-          </div>
-        </div>
-        <div className="container-background">
-          <div className="navigation">
-            <button
-              ref={prevBtnRef}
-              className="action-btn"
-              onClick={prevSongHandler}
-              disabled={!isValidIndex}
-            >
-              <FontAwesomeIcon icon={faBackward} />
-            </button>
-            <button
-              ref={playBtnRef}
-              className="action-btn action-btn-big"
-              onClick={handleClickPlayPause}
-              disabled={!isValidIndex}
-            >
-              {isLoading ? (
-                <FontAwesomeIcon icon={faSpinner} spin />
-              ) : (
-                <FontAwesomeIcon icon={isPlaying ? faPause : faPlay} />
+                  className="progress-container flex"
+                  ref={progressContainerRef}
+                  onClick={setProgress}
+                >
+                  <div
+                    className="progress"
+                    ref={progressRef}
+                    style={{ width: `${progress}%` }}
+                  ></div>
+                </div>
               )}
-            </button>
-            <button
-              ref={nextBtnRef}
-              className="action-btn"
-              onClick={nextSongHandler}
-              disabled={!isValidIndex}
-            >
-              <FontAwesomeIcon icon={faForward} />
-            </button>
+            </div>
           </div>
-        </div>
-        <div className="flex flex-row items-center justify-center z-20 mt-6">
-          {[0, 1, 2].map((trackIndex) => (
-            <button
-              key={trackIndex}
-              className="playButton flex mx-4 bg-cyan-700 p-4 hover:bg-cyan-600 active:bg-cyan-900 ml-2 rounded-full"
-              onClick={() => toggleMuteTrack(trackIndex)}
-            >
-              {trackIndex === 0 ? (
-                isMuted[trackIndex] ? (
-                  <FontAwesomeIcon icon={faGuitar} size="2xl" fade />
+          <div className="container-background">
+            <div className="navigation">
+              <button
+                ref={prevBtnRef}
+                className="action-btn"
+                onClick={prevSongHandler}
+                disabled={!isValidIndex}
+              >
+                <FontAwesomeIcon icon={faBackward} />
+              </button>
+              <button
+                ref={playBtnRef}
+                className="action-btn action-btn-big"
+                onClick={handleClickPlayPause}
+                disabled={!isValidIndex}
+              >
+                {isLoading ? (
+                  <FontAwesomeIcon icon={faSpinner} spin />
                 ) : (
-                  <FontAwesomeIcon icon={faGuitar} size="2xl" />
-                )
-              ) : trackIndex === 1 ? (
-                isMuted[trackIndex] ? (
-                  <FontAwesomeIcon icon={faMicrophone} size="2xl" fade />
+                  <FontAwesomeIcon icon={isPlaying ? faPause : faPlay} />
+                )}
+              </button>
+              <button
+                ref={nextBtnRef}
+                className="action-btn"
+                onClick={nextSongHandler}
+                disabled={!isValidIndex}
+              >
+                <FontAwesomeIcon icon={faForward} />
+              </button>
+            </div>
+          </div>
+          <div className="flex flex-row items-center justify-center z-20 mt-6">
+            {[0, 1, 2].map((trackIndex) => (
+              <button
+                key={trackIndex}
+                className="playButton flex mx-4 bg-cyan-700 p-4 hover:bg-cyan-600 active:bg-cyan-900 ml-2 rounded-full"
+                onClick={() => toggleMuteTrack(trackIndex)}
+              >
+                {trackIndex === 0 ? (
+                  isMuted[trackIndex] ? (
+                    <FontAwesomeIcon icon={faGuitar} size="2xl" fade />
+                  ) : (
+                    <FontAwesomeIcon icon={faGuitar} size="2xl" />
+                  )
+                ) : trackIndex === 1 ? (
+                  isMuted[trackIndex] ? (
+                    <FontAwesomeIcon icon={faMicrophone} size="2xl" fade />
+                  ) : (
+                    <FontAwesomeIcon icon={faMicrophone} size="2xl" />
+                  )
+                ) : isMuted[trackIndex] ? (
+                  <FontAwesomeIcon icon={faDrum} size="2xl" fade />
                 ) : (
-                  <FontAwesomeIcon icon={faMicrophone} size="2xl" />
-                )
-              ) : isMuted[trackIndex] ? (
-                <FontAwesomeIcon icon={faDrum} size="2xl" fade />
-              ) : (
-                <FontAwesomeIcon icon={faDrum} size="2xl" />
-              )}
-            </button>
-          ))}
+                  <FontAwesomeIcon icon={faDrum} size="2xl" />
+                )}
+              </button>
+            ))}
+          </div>
+          <div>{/* <AudioProcessor mp3FileUrl={audio.currentSong} /> */}</div>
         </div>
-        <div>{/* <AudioProcessor mp3FileUrl={audio.currentSong} /> */}</div>
-      </div>
-    </>
+      </>
+    </ErrorBoundary>
   );
 };
 

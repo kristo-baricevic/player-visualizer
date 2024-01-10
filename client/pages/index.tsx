@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 // import BackgroundAnimation from "@/components/BackgroundAnimation";
 import MultiTrackPlayer from "@/components/MultiTrackPlayer";
 import LinerNotes from "@/components/LinerNotes";
+import ErrorBoundary from "@/components/ErrorBoundary";
 import { AudioPlayerContext } from "@/components/AudioPlayerContext";
 import { animationForSong, clearAnimations } from "@/utils/animations";
 
@@ -37,12 +38,14 @@ function Index() {
           </span>
         ))}
       </div>
-      <div className="flex items-center justify-center box mb-10 h-80 w-80 bg-cyan-300 rounded-lg">
-        <MultiTrackPlayer />
-      </div>
-      <div id="starburst" className="starburst"></div>
-      <div>{/* <BackgroundAnimation /> */}</div>
-      <LinerNotes />
+      <ErrorBoundary>
+        <div className="flex items-center justify-center box mb-10 h-80 w-80 bg-cyan-300 rounded-lg">
+          <MultiTrackPlayer />
+        </div>
+        <div id="starburst" className="starburst"></div>
+        <div>{/* <BackgroundAnimation /> */}</div>
+        <LinerNotes />
+      </ErrorBoundary>
     </main>
   );
 }
