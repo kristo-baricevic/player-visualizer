@@ -98,8 +98,7 @@ const audioReducer = (
           isLoading: false,
           error: false,
         };
-      }
-      break;
+      };
 
     case AudioActionTypes.FETCH_SONGS_FAILURE:
       return {

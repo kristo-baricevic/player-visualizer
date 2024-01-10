@@ -8,7 +8,11 @@ const songRouter = require("./controllers/songController");
 
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use(cors());
+const corsOptions = {
+  origin: "http://localhost:3000", // or use '*' to allow all origins
+  optionsSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
 
 app.get("/api/home", (req, res) => {
   res.json({ message: "Like this video!", people: ["Arpan", "Jack", "Barry"] });

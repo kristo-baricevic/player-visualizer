@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useContext, useRef } from "react";
 import { AudioPlayerContext } from "./AudioPlayerContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -50,6 +51,10 @@ const MultiTrackPlayer = () => {
     toggleMuteTrack,
   } = audio;
 
+  const isValidIndex =
+    currentSongIndex >= 0 && currentSongIndex < trackLinerNotes.length;
+  console.log(isValidIndex);
+
   const setProgress = (e: React.MouseEvent<HTMLDivElement>) => {
     const width = progressContainerRef.current?.clientWidth || 0;
     const clickX = e.nativeEvent.offsetX;
@@ -84,25 +89,34 @@ const MultiTrackPlayer = () => {
         id="music-container"
       >
         <div className="music-info">
-          <img
-            className="cover-image"
-            src={`http://localhost:8080/public/images/cover${currentSongIndex}.png`}
-          />
+          {isValidIndex && (
+            <img
+              className="cover-image"
+              src={`http://localhost:8080/public/images/cover${currentSongIndex}.png`}
+              onError={(e) => (e.currentTarget.src = "cover1.png")}
+              alt="album art"
+            />
+          )}
           <div className="flex flex-col px-2">
-            <h4 className="flex" ref={titleRef}>
-              {trackLinerNotes[currentSongIndex].title}
-            </h4>
-            <div
-              className="progress-container flex"
-              ref={progressContainerRef}
-              onClick={setProgress}
-            >
+            {isValidIndex && (
+              <h4 className="flex" ref={titleRef}>
+                {trackLinerNotes[currentSongIndex].title}
+              </h4>
+            )}
+
+            {isValidIndex && (
               <div
-                className="progress"
-                ref={progressRef}
-                style={{ width: `${progress}%` }}
-              ></div>
-            </div>
+                className="progress-container flex"
+                ref={progressContainerRef}
+                onClick={setProgress}
+              >
+                <div
+                  className="progress"
+                  ref={progressRef}
+                  style={{ width: `${progress}%` }}
+                ></div>
+              </div>
+            )}
           </div>
         </div>
         <div className="container-background">
@@ -111,6 +125,7 @@ const MultiTrackPlayer = () => {
               ref={prevBtnRef}
               className="action-btn"
               onClick={prevSongHandler}
+              disabled={!isValidIndex}
             >
               <FontAwesomeIcon icon={faBackward} />
             </button>
@@ -118,6 +133,7 @@ const MultiTrackPlayer = () => {
               ref={playBtnRef}
               className="action-btn action-btn-big"
               onClick={handleClickPlayPause}
+              disabled={!isValidIndex}
             >
               {isLoading ? (
                 <FontAwesomeIcon icon={faSpinner} spin />
@@ -129,6 +145,7 @@ const MultiTrackPlayer = () => {
               ref={nextBtnRef}
               className="action-btn"
               onClick={nextSongHandler}
+              disabled={!isValidIndex}
             >
               <FontAwesomeIcon icon={faForward} />
             </button>

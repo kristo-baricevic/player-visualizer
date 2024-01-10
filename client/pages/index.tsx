@@ -1,6 +1,4 @@
 import React, { useEffect, useState, useContext } from "react";
-import Image from "next/image";
-import { gsap } from "gsap";
 // import BackgroundAnimation from "@/components/BackgroundAnimation";
 import MultiTrackPlayer from "@/components/MultiTrackPlayer";
 import LinerNotes from "@/components/LinerNotes";
@@ -9,11 +7,13 @@ import { animationForSong, clearAnimations } from "@/utils/animations";
 
 function Index() {
   const audio = useContext(AudioPlayerContext);
+  
 
   useEffect(() => {
+    if (audio) {
     try {
       if (audio) {
-        const { currentSongIndex } = audio;
+        const { currentSongIndex, loadNewSong } = audio;
         clearAnimations();
         animationForSong(120, 0, 0);
         loadNewSong(currentSongIndex);
@@ -21,8 +21,13 @@ function Index() {
     } catch (error) {
       console.error("Error in Index component useEffect:", error);
     }
-  }, [audio?.currentSongIndex]);
-  
+  }
+}, [audio?.currentSongIndex, audio?.loadNewSong]);
+
+if (!audio || !audio.currentSongIndex || !audio.loadNewSong) {
+  return null;
+}
+
 
   // test fetch
   // useEffect(() => {
@@ -47,11 +52,7 @@ function Index() {
   //     });
   // }, []);
 
-  if (!audio) {
-    return null;
-  }
-
-  const { currentSongIndex, loadNewSong } = audio;
+ 
 
   return (
     <main className="flex flex-col min-h-screen items-center justify-center">
