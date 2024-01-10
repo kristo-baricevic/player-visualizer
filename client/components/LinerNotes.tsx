@@ -25,10 +25,13 @@ const LinerNotes = () => {
 
   const currentSong = trackLinerNotes && trackLinerNotes[currentSongIndex];
 
-  return (
-    <div className="sample-info mt-10 px-6">
-      <h3>Samples used in &rdquo;{currentSong?.title}&rdquo;: </h3>
-      {currentSong?.samples.map((sample, sampleIndex) => (
+  if (!currentSong) {
+    return <div>Loading song information...</div>;
+  }
+
+  const samplesList =
+    currentSong && Array.isArray(currentSong.samples) ? (
+      currentSong.samples.map((sample, sampleIndex) => (
         <p key={sampleIndex}>
           {sample.parts.map((part, partIndex) =>
             part.link ? (
@@ -40,9 +43,17 @@ const LinerNotes = () => {
             )
           )}
         </p>
-      ))}
-    </div>
-  );
+      ))
+    ) : (
+      <p>No samples available.</p>
+    );
+
+    return (
+      <div className="sample-info mt-10 px-6">
+        <h3>Samples used in &rdquo;{currentSong.title}&rdquo;: </h3>
+        {samplesList}
+      </div>
+    );
 };
 
 export default LinerNotes;
