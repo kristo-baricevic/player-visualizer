@@ -5,26 +5,24 @@ import { gsap } from "gsap";
 import MultiTrackPlayer from "@/components/MultiTrackPlayer";
 import LinerNotes from "@/components/LinerNotes";
 import { AudioPlayerContext } from "@/components/AudioPlayerContext";
-import {
-  animationForSong,
-  clearAnimations,
-} from "@/utils/animations";
+import { animationForSong, clearAnimations } from "@/utils/animations";
 
 function Index() {
   const audio = useContext(AudioPlayerContext);
 
   useEffect(() => {
-    if (audio) {
-      const { currentSongIndex } = audio;
-
-      // stop current animation
-      clearAnimations();
-
-      animationForSong(120, 0, 0);
+    try {
+      if (audio) {
+        const { currentSongIndex } = audio;
+        clearAnimations();
+        animationForSong(120, 0, 0);
+        loadNewSong(currentSongIndex);
+      }
+    } catch (error) {
+      console.error("Error in Index component useEffect:", error);
     }
-
-    loadNewSong(currentSongIndex);
   }, [audio?.currentSongIndex]);
+  
 
   // test fetch
   // useEffect(() => {

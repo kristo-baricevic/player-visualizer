@@ -3,7 +3,6 @@ import { Action } from "redux";
 import { AudioActionTypes } from "./actionTypes";
 import { AudioState } from "./reducer";
 
-
 type ThunkResult<R> = ThunkAction<R, RootState, undefined, Action<string>>;
 
 export interface RootState {
@@ -39,8 +38,10 @@ interface FetchSongsSuccessAction extends Action {
   payload: SongData[];
 }
 
-export const fetchSongsSuccess = (songs: SongData[]): FetchSongsSuccessAction => ({
-    type: AudioActionTypes.FETCH_SONGS_SUCCESS,
+export const fetchSongsSuccess = (
+  songs: SongData[]
+): FetchSongsSuccessAction => ({
+  type: AudioActionTypes.FETCH_SONGS_SUCCESS,
   payload: songs,
 });
 
@@ -48,21 +49,31 @@ export const fetchSongsFailure = () => ({
   type: AudioActionTypes.FETCH_SONGS_FAILURE,
 });
 
-export const fetchSongs = (): ThunkAction<void, RootState, unknown, Action<string>> => {
-  return (dispatch: any) => {
-    fetch("http://localhost:8080/api/songs")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((songsData) => {
-        dispatch(fetchSongsSuccess(songsData as SongData[]));
-      })
-      .catch((error) => {
-        dispatch(fetchSongsFailure());
-      });
+export const fetchSongs = (): ThunkAction<
+  void,
+  RootState,
+  unknown,
+  Action<string>
+> => {
+  return (dispatch) => {
+    try {
+      fetch("http://localhost:8080/api/songs")
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((songsData) => {
+          dispatch(fetchSongsSuccess(songsData as SongData[]));
+        })
+        .catch((networkError) => {
+          console.error("Network error:", networkError);
+          dispatch(fetchSongsFailure());
+        });
+    } catch (error) {
+      console.error("Unexpected error in fetchSongs ThunkAction:", error);
+    }
   };
 };
 

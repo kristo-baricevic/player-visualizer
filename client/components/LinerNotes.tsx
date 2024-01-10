@@ -1,14 +1,18 @@
 import { fetchSongs } from "@/redux/actions";
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/redux/rootReducer';
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, AppDispatch } from "@/store";
 
-
+export const useAppDispatch: () => AppDispatch = useDispatch;
 
 const LinerNotes = () => {
-  const dispatch = useDispatch();
-  const trackLinerNotes = useSelector((state: RootState) => state.audio.trackLinerNotes);
-  const currentSongIndex = useSelector((state: RootState) => state.audio.currentSongIndex);
+  const dispatch = useAppDispatch();
+  const trackLinerNotes = useSelector(
+    (state: RootState) => state.audio.trackLinerNotes
+  );
+  const currentSongIndex = useSelector(
+    (state: RootState) => state.audio.currentSongIndex
+  );
   const error = useSelector((state: RootState) => state.audio.error);
 
   useEffect(() => {
@@ -20,7 +24,6 @@ const LinerNotes = () => {
   }
 
   const currentSong = trackLinerNotes && trackLinerNotes[currentSongIndex];
-
 
   return (
     <div className="sample-info mt-10 px-6">

@@ -2,11 +2,14 @@
 
 import React, { createContext, useState, useCallback, useEffect } from "react";
 import { fetchSongs } from "@/redux/actions";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 import { Howl } from "howler";
-import { ThunkDispatch } from 'redux-thunk';
-import { RootState } from '../store';
-import { Action } from 'redux';
+import { ThunkDispatch } from "redux-thunk";
+import { RootState } from "../store";
+import { Action } from "redux";
+import { AppDispatch } from "../store";
+
+export const useAppDispatch: () => AppDispatch = useDispatch;
 
 // Define the shape of your context state
 interface AudioContextState {
@@ -311,7 +314,7 @@ export const AudioPlayerContext = createContext<AudioContextState | undefined>(
 );
 
 export const AudioProvider: React.FC<AudioProviderProps> = ({ children }) => {
-  const dispatch: ThunkDispatch<RootState, unknown, Action<string>> = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [currentTrack, setCurrentTrack] = useState<CurrentTrackState>({
     song: null,
@@ -329,37 +332,38 @@ export const AudioProvider: React.FC<AudioProviderProps> = ({ children }) => {
 
   const [trackLinerNotes, setTrackLinerNotes] = useState<TrackLinerNotes[]>([]);
 
-
   const isLoading = Object.values(trackLoadingStatus).some((status) => status);
 
   const [volume, setVolume] = useState(1);
   const [progress, setProgress] = useState(0);
 
   const loadSong = useCallback((songIndex: number) => {
-    setTrackLoadingStatus({ track1: true, track2: true, track3: true });
-    const basePath = `http://localhost:8080/public/music/song${songIndex + 1}`;
-    const newSong = {
-      track1: new Howl({
-        src: [`${basePath}/track1.mp3`],
-        onload: () =>
-          setTrackLoadingStatus((prev) => ({ ...prev, track1: false })),
-      }),
-      track2: new Howl({
-        src: [`${basePath}/track2.mp3`],
-        onload: () =>
-          setTrackLoadingStatus((prev) => ({ ...prev, track2: false })),
-      }),
-      track3: new Howl({
-        src: [`${basePath}/track3.mp3`],
-        onload: () =>
-          setTrackLoadingStatus((prev) => ({ ...prev, track3: false })),
-      }),
-    };
-    setCurrentTrack((prev) => ({ ...prev, song: newSong, index: songIndex }));
-
-    // fetch liner notes
-    dispatch(fetchSongs());
-  }, []);
+    try {
+      setTrackLoadingStatus({ track1: true, track2: true, track3: true });
+      const basePath = `http://localhost:8080/public/music/song${songIndex + 1}`;
+      const newSong = {
+        track1: new Howl({
+          src: [`${basePath}/track1.mp3`],
+          onload: () => setTrackLoadingStatus((prev) => ({ ...prev, track1: false })),
+        }),
+        track2: new Howl({
+          src: [`${basePath}/track2.mp3`],
+          onload: () => setTrackLoadingStatus((prev) => ({ ...prev, track2: false })),
+        }),
+        track3: new Howl({
+          src: [`${basePath}/track3.mp3`],
+          onload: () => setTrackLoadingStatus((prev) => ({ ...prev, track3: false })),
+        }),
+      };
+      setCurrentTrack((prev) => ({ ...prev, song: newSong, index: songIndex }));
+  
+      // fetch liner notes
+      dispatch(fetchSongs());
+    } catch (error) {
+      console.error("Error in loadSong:", error);
+    }
+  }, [dispatch]);
+  
 
   const playPauseTracks = useCallback(() => {
     if (!currentTrack.song) return;
