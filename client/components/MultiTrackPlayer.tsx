@@ -64,12 +64,16 @@ const MultiTrackPlayer = () => {
   };
 
   const handleClickPlayPause = () => {
-    console.log("click");
-    playPauseTracks();
-    if (musicContainerRef.current && isPlaying) {
-      musicContainerRef.current?.classList.remove("play");
-    } else {
-      musicContainerRef.current?.classList.add("play");
+    try {
+      console.log("click");
+      playPauseTracks();
+      if (musicContainerRef.current && isPlaying) {
+        musicContainerRef.current?.classList.remove("play");
+      } else {
+        musicContainerRef.current?.classList.add("play");
+      }
+    } catch (error) {
+      console.error("error in click handler :", error);
     }
   };
 

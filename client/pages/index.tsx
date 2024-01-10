@@ -7,52 +7,25 @@ import { animationForSong, clearAnimations } from "@/utils/animations";
 
 function Index() {
   const audio = useContext(AudioPlayerContext);
-  
 
   useEffect(() => {
     if (audio) {
-    try {
-      if (audio) {
-        const { currentSongIndex, loadNewSong } = audio;
-        clearAnimations();
-        animationForSong(120, 0, 0);
-        loadNewSong(currentSongIndex);
+      try {
+        if (audio) {
+          const { currentSongIndex, loadNewSong } = audio;
+          clearAnimations();
+          animationForSong(120, 0, 0);
+          loadNewSong(currentSongIndex);
+        }
+      } catch (error) {
+        console.error("Error in Index component useEffect:", error);
       }
-    } catch (error) {
-      console.error("Error in Index component useEffect:", error);
     }
+  }, [audio?.currentSongIndex, audio?.loadNewSong]);
+
+  if (!audio || !audio.currentSongIndex || !audio.loadNewSong) {
+    return null;
   }
-}, [audio?.currentSongIndex, audio?.loadNewSong]);
-
-if (!audio || !audio.currentSongIndex || !audio.loadNewSong) {
-  return null;
-}
-
-
-  // test fetch
-  // useEffect(() => {
-  //   fetch("http://localhost:8080/api/songs")
-  //     .then((response) => {
-  //       if (!response.ok) {
-  //         throw new Error("Network response was not ok");
-  //       }
-  //       return response.json();
-  //     })
-  //     .then((songsData) => {
-  //       if (songsData && songsData.length > 0) {
-  //         // setMessage(songsData[0].title);
-  //         // setPeople(songsData.people) // Uncomment or modify as needed
-  //       } else {
-  //         console.log("No song data available");
-  //         // setMessage("whoops");
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error("Fetch error:", error);
-  //     });
-  // }, []);
-
- 
 
   return (
     <main className="flex flex-col min-h-screen items-center justify-center">
