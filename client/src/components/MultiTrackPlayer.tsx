@@ -32,7 +32,6 @@ const MultiTrackPlayer = () => {
   const progressRef = useRef<HTMLDivElement>(null);
   const progressContainerRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
-  const coverRef = useRef<HTMLImageElement>(null);
 
   if (!audio) {
     return null;
@@ -44,17 +43,12 @@ const MultiTrackPlayer = () => {
     isPlaying,
     trackLinerNotes,
     currentSongIndex,
-    loadNewSong,
     progress,
     prevSong,
     nextSong,
     playPauseTracks,
     toggleMuteTrack,
   } = audio;
-
-  const isValidIndex =
-    currentSongIndex >= 0 && currentSongIndex < trackLinerNotes.length;
-  console.log(isValidIndex);
 
   const setProgress = (e: React.MouseEvent<HTMLDivElement>) => {
     const width = progressContainerRef.current?.clientWidth || 0;
@@ -65,16 +59,12 @@ const MultiTrackPlayer = () => {
   };
 
   const handleClickPlayPause = () => {
-    try {
-      console.log("click");
-      playPauseTracks();
-      if (musicContainerRef.current && isPlaying) {
-        musicContainerRef.current?.classList.remove("play");
-      } else {
-        musicContainerRef.current?.classList.add("play");
-      }
-    } catch (error) {
-      console.error("error in click handler :", error);
+    console.log("click");
+    playPauseTracks();
+    if (musicContainerRef.current && isPlaying) {
+      musicContainerRef.current?.classList.remove("play");
+    } else {
+      musicContainerRef.current?.classList.add("play");
     }
   };
 
@@ -95,34 +85,27 @@ const MultiTrackPlayer = () => {
           id="music-container"
         >
           <div className="music-info">
-            {isValidIndex && (
-              <img
-                className="cover-image"
-                src={`http://localhost:8080/images/cover${currentSongIndex}.png`}
-                onError={(e) => (e.currentTarget.src = "cover1.png")}
-                alt="album art"
-              />
-            )}
+            <img
+              className="cover-image"
+              src={`http://localhost:8080/images/cover${currentSongIndex}.png`}
+              onError={(e) => (e.currentTarget.src = "cover1.png")}
+              alt="album art"
+            />
             <div className="flex flex-col px-2">
-              {isValidIndex && (
-                <h4 className="flex" ref={titleRef}>
-                  {trackLinerNotes[currentSongIndex]?.title}
-                </h4>
-              )}
-
-              {isValidIndex && (
+              <h4 className="flex" ref={titleRef}>
+                {trackLinerNotes[currentSongIndex]?.title}
+              </h4>
+              <div
+                className="progress-container flex"
+                ref={progressContainerRef}
+                onClick={setProgress}
+              >
                 <div
-                  className="progress-container flex"
-                  ref={progressContainerRef}
-                  onClick={setProgress}
-                >
-                  <div
-                    className="progress"
-                    ref={progressRef}
-                    style={{ width: `${progress}%` }}
-                  ></div>
-                </div>
-              )}
+                  className="progress"
+                  ref={progressRef}
+                  style={{ width: `${progress}%` }}
+                ></div>
+              </div>
             </div>
           </div>
           <div className="container-background">
@@ -131,7 +114,6 @@ const MultiTrackPlayer = () => {
                 ref={prevBtnRef}
                 className="action-btn"
                 onClick={prevSongHandler}
-                disabled={!isValidIndex}
               >
                 <FontAwesomeIcon icon={faBackward} />
               </button>
@@ -139,7 +121,6 @@ const MultiTrackPlayer = () => {
                 ref={playBtnRef}
                 className="action-btn action-btn-big"
                 onClick={handleClickPlayPause}
-                disabled={!isValidIndex}
               >
                 {isLoading ? (
                   <FontAwesomeIcon icon={faSpinner} spin />
@@ -151,7 +132,6 @@ const MultiTrackPlayer = () => {
                 ref={nextBtnRef}
                 className="action-btn"
                 onClick={nextSongHandler}
-                disabled={!isValidIndex}
               >
                 <FontAwesomeIcon icon={faForward} />
               </button>
@@ -184,7 +164,6 @@ const MultiTrackPlayer = () => {
               </button>
             ))}
           </div>
-          <div>{/* <AudioProcessor mp3FileUrl={audio.currentSong} /> */}</div>
         </div>
       </>
     </ErrorBoundary>

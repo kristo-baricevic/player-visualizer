@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { AudioPlayerContext } from "./AudioPlayerContext";
 import ErrorBoundary from "./ErrorBoundary";
-import PlayButton from "./PlayButton";
 import ProgressBar from "./ProgressBar";
 import AlbumCover from "./AlbumCover";
 import NavigationDashboard from "./NavigationDashboard";
@@ -44,16 +43,6 @@ const NewMultiTrackPlayer = () => {
 
   return (
     <ErrorBoundary>
-      <div className="music-container" id="music-container">
-        {isValidIndex && <AlbumCover currentSongIndex={currentSongIndex} />}
-        <div className="flex flex-col px-2">
-          {isValidIndex && (
-            <h4 className="flex">{trackLinerNotes[currentSongIndex]?.title}</h4>
-          )}
-          {isValidIndex && (
-            <ProgressBar progress={progress} onSetProgress={setProgress} />
-          )}
-        </div>
         <NavigationDashboard
           isLoading={isLoading}
           isPlaying={isPlaying}
@@ -63,7 +52,6 @@ const NewMultiTrackPlayer = () => {
           isValidIndex={isValidIndex}
         />
         <TrackButtons isMuted={isMuted} onToggleMute={toggleMuteTrack} />
-      </div>
     </ErrorBoundary>
   );
 };

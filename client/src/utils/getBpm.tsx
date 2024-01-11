@@ -11,11 +11,11 @@ interface Group {
 }
 
 function getPeaks(data: Float32Array[]): Peak[] {
-  // First we will identify the loudest sample in each part. This is the "beat". 
+  // First we will identify the loudest sample in each part. This is the "beat".
   // Each "part" is 0.5 seconds long - or 22,050 samples.
   // This will give us 60 'beats' - we will take the loudest half of those
   // This will allow us to ignore breaks, and allow us to address tracks with a BPM below 120.
-  
+
   var partSize = 22050,
     parts = data[0].length / partSize,
     peaks = [];
@@ -109,7 +109,6 @@ export const getBpm = (buffer: AudioBuffer | null): number | null => {
   console.log("peaks is", peaks);
   const groups = getIntervals(peaks);
   console.log("groups is", peaks);
-
 
   if (groups.length === 0) {
     return null;

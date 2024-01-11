@@ -1,6 +1,12 @@
-import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBackward, faForward, faPause, faPlay, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faBackward,
+  faForward,
+  faPause,
+  faPlay,
+  faSpinner,
+} from "@fortawesome/free-solid-svg-icons";
 
 interface NavigationDashboardProps {
   onPrevClick: () => void;
@@ -19,7 +25,7 @@ const NavigationDashboard: React.FC<NavigationDashboardProps> = ({
   isPlaying,
   onPlayPauseClick,
 }) => (
-  <div className="navigation-dashboard">
+  <div className="container-background">
     <div className="navigation">
       <button
         className="action-btn"
@@ -31,7 +37,7 @@ const NavigationDashboard: React.FC<NavigationDashboardProps> = ({
       <button
         className="action-btn action-btn-big"
         onClick={onPlayPauseClick}
-        disabled={!isLoading}
+        disabled={!isValidIndex}
       >
         {isLoading ? (
           <FontAwesomeIcon icon={faSpinner} spin />
