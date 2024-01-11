@@ -336,36 +336,41 @@ export const AudioProvider: React.FC<AudioProviderProps> = ({ children }) => {
 
   const loadSong = useCallback(
     (songIndex: number) => {
+      if (currentTrack.song) {
+        Object.values(currentTrack.song).forEach(track => track.unload());
+      };
+
       try {
         setTrackLoadingStatus({ track1: true, track2: true, track3: true });
-        const basePath = `http://localhost:8080/public/music/song${
+        const basePath = `http://localhost:8080/music/song${
           songIndex + 1
         }`;
-        const newSong = {
-          track1: new Howl({
-            src: [`${basePath}/track1.mp3`],
-            onload: () =>
-              setTrackLoadingStatus((prev) => ({ ...prev, track1: false })),
-          }),
-          track2: new Howl({
-            src: [`${basePath}/track2.mp3`],
-            onload: () =>
-              setTrackLoadingStatus((prev) => ({ ...prev, track2: false })),
-          }),
-          track3: new Howl({
-            src: [`${basePath}/track3.mp3`],
-            onload: () =>
-              setTrackLoadingStatus((prev) => ({ ...prev, track3: false })),
-          }),
-        };
-        setCurrentTrack((prev) => ({
-          ...prev,
-          song: newSong,
-          index: songIndex,
-        }));
+        // const newSong = {
+        //   track1: new Howl({
+        //     src: [`${basePath}/track1.mp3`],
+        //     onload: () =>
+        //       setTrackLoadingStatus((prev) => ({ ...prev, track1: false })),
+        //   }),
+        //   track2: new Howl({
+        //     src: [`${basePath}/track2.mp3`],
+        //     onload: () =>
+        //       setTrackLoadingStatus((prev) => ({ ...prev, track2: false })),
+        //   }),
+        //   track3: new Howl({
+        //     src: [`${basePath}/track3.mp3`],
+        //     onload: () =>
+        //       setTrackLoadingStatus((prev) => ({ ...prev, track3: false })),
+        //   }),
+        // };
+        // setCurrentTrack((prev) => ({
+        //   ...prev,
+        //   song: newSong,
+        //   index: songIndex,
+        // }));
 
         // fetch liner notes
-        dispatch(fetchSongs());
+        const data = dispatch(fetchSongs());
+        console.log(data);
       } catch (error) {
         console.error("Error in loadSong:", error);
       }

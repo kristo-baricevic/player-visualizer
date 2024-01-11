@@ -8,8 +8,12 @@ const songRouter = require("./controllers/songController");
 
 app.use(express.static(path.join(__dirname, "public")));
 
+// Serve static files.
+app.use("/images", express.static(path.join(__dirname, "public/images")));
+app.use("/music", express.static(path.join(__dirname, "public/music")));
+
 const corsOptions = {
-  origin: "http://localhost:3000", 
+  origin: 'http://localhost:3000',
   optionsSuccessStatus: 200,
 };
 app.use(cors(corsOptions));

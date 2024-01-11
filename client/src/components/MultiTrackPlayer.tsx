@@ -98,7 +98,7 @@ const MultiTrackPlayer = () => {
             {isValidIndex && (
               <img
                 className="cover-image"
-                src={`http://localhost:8080/public/images/cover${currentSongIndex}.png`}
+                src={`http://localhost:8080/images/cover${currentSongIndex}.png`}
                 onError={(e) => (e.currentTarget.src = "cover1.png")}
                 alt="album art"
               />

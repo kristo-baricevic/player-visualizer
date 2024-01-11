@@ -1,13 +1,17 @@
 import React, { useEffect, useState, useContext } from "react";
 // import BackgroundAnimation from "@/components/BackgroundAnimation";
-import MultiTrackPlayer from "../src/components/MultiTrackPlayer";
+import NewMultiTrackPlayer from "../src/components/NewMultiTrackPlayer";
 import LinerNotes from "../src/components/LinerNotes";
 import ErrorBoundary from "../src/components/ErrorBoundary";
 import { AudioPlayerContext } from "../src/components/AudioPlayerContext";
 import { animationForSong, clearAnimations } from "../src/utils/animations";
+import { useSelector } from "react-redux";
+import { RootState } from "@/src/store";
 
 function Index() {
   const audio = useContext(AudioPlayerContext);
+  const songsData = useSelector((state: RootState) => state.audio.trackLinerNotes);
+
 
   useEffect(() => {
     if (audio) {
@@ -16,6 +20,7 @@ function Index() {
           clearAnimations();
           animationForSong(120, 0, 0);
           loadNewSong(currentSongIndex);
+          console.log(songsData);
       } catch (error) {
         console.error("Error in Index component useEffect:", error);
       }
@@ -38,7 +43,7 @@ function Index() {
       </div>
       <ErrorBoundary>
         <div className="flex items-center justify-center box mb-10 h-80 w-80 bg-cyan-300 rounded-lg">
-          <MultiTrackPlayer />
+          <NewMultiTrackPlayer />
         </div>
         <div id="starburst" className="starburst"></div>
         <div>{/* <BackgroundAnimation /> */}</div>

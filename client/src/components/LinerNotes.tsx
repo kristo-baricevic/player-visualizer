@@ -15,6 +15,7 @@ const LinerNotes = () => {
     (state: RootState) => state?.audio?.currentSongIndex
   );
   const error = useSelector((state: RootState) => state?.audio?.error);
+  console.log("track liner notes:", trackLinerNotes);
 
   useEffect(() => {
     dispatch(fetchSongs());

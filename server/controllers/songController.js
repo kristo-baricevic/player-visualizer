@@ -257,7 +257,7 @@ const loadInitialSong = (req, res) => {
         if (!songsData) {
             throw new Error("No song data is available");
         }
-        console.log(req);
+        console.log(songsData);
         res.json(songsData);
     }
     catch (error) {

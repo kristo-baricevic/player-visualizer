@@ -1,5 +1,5 @@
 import { ThunkAction } from "redux-thunk";
-import { Action } from "redux";
+import { Action, Dispatch } from "redux";
 import { AudioActionTypes } from "./actionTypes";
 import { AudioState } from "./reducer";
 
@@ -38,6 +38,11 @@ interface FetchSongsSuccessAction extends Action {
   payload: SongData[];
 }
 
+interface FetchSongsFailureAction extends Action {
+  type: typeof AudioActionTypes.FETCH_SONGS_FAILURE;
+  error: string;
+}
+
 export const fetchSongsSuccess = (
   songs: SongData[]
 ): FetchSongsSuccessAction => ({
@@ -45,34 +50,26 @@ export const fetchSongsSuccess = (
   payload: songs,
 });
 
-export const fetchSongsFailure = () => ({
+export const fetchSongsFailure = (
+  error: string = "Unknown error"
+): FetchSongsFailureAction => ({
   type: AudioActionTypes.FETCH_SONGS_FAILURE,
+  error,
 });
 
-export const fetchSongs = (): ThunkAction<
-  void,
-  RootState,
-  unknown,
-  Action<string>
-> => {
-  return (dispatch) => {
+export const fetchSongs = () => {
+  return async (dispatch: Dispatch<SongsActions>) => {
     try {
-      fetch("http://localhost:8080/server-api/songs")
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          return response.json();
-        })
-        .then((songsData) => {
-          dispatch(fetchSongsSuccess(songsData as SongData[]));
-        })
-        .catch((networkError) => {
-          console.error("Network error:", networkError);
-          dispatch(fetchSongsFailure());
-        });
+      const response = await fetch("http://localhost:8080/server-api/songs");
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const songsData = await response.json();
+      console.log(songsData);
+      dispatch(fetchSongsSuccess(songsData));
     } catch (error) {
-      console.error("Unexpected error in fetchSongs ThunkAction:", error);
+      console.error("Error fetching songs:", error);
+      dispatch(fetchSongsFailure());
     }
   };
 };
@@ -100,3 +97,5 @@ export const toggleMuteTrack = (trackIndex: number) => {
     payload: trackIndex,
   };
 };
+
+export type SongsActions = FetchSongsSuccessAction | FetchSongsFailureAction;

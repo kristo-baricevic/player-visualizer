@@ -96,45 +96,57 @@ export const animationForSong = (
       return null;
     }
 
-    const durationBasedOnBPM = 60 / bpm;
+    const boxElement = document.querySelector(".box");
+    const sampleInfoH3Element = document.querySelector(".sample-info h3");
+    const sampleInfoPElement = document.querySelector(".sample-info p");
+    const letterElements = document.querySelectorAll(".letter");
 
-    // Use spectral centroid to set color
-    const colorBasedOnCentroid = `hsl(${analysisData1 % 360}, 100%, 50%)`;
+    if (
+      boxElement &&
+      sampleInfoH3Element &&
+      sampleInfoPElement &&
+      letterElements.length
+    ) {
+      const durationBasedOnBPM = 60 / bpm;
 
-    // Use spectral rolloff to set Y-axis movement
-    const yMovementBasedOnRolloff = analysisData2 / 1000;
+      // Use spectral centroid to set color
+      const colorBasedOnCentroid = `hsl(${analysisData1 % 360}, 100%, 50%)`;
 
-    gsap.to(".box", {
-      rotate: 360,
-      y: yMovementBasedOnRolloff,
-      duration: durationBasedOnBPM,
-    });
+      // Use spectral rolloff to set Y-axis movement
+      const yMovementBasedOnRolloff = analysisData2 / 1000;
 
-    gsap.fromTo(
-      ".sample-info h3",
-      { opacity: 0 },
-      { opacity: 1, duration: 2, delay: 2 }
-    );
+      gsap.to(".box", {
+        rotate: 360,
+        y: yMovementBasedOnRolloff,
+        duration: durationBasedOnBPM,
+      });
 
-    gsap.fromTo(
-      ".sample-info p",
-      { opacity: 0 },
-      { opacity: 1, duration: 2.5, delay: 2.15 }
-    );
+      gsap.fromTo(
+        ".sample-info h3",
+        { opacity: 0 },
+        { opacity: 1, duration: 2, delay: 2 }
+      );
 
-    gsap.to(".letter", {
-      color: colorBasedOnCentroid,
-      duration: 1.5,
-      repeat: -1,
-      yoyo: true,
-      delay: 1,
-      stagger: 0.5,
-      repeatDelay: 0.5,
-    });
+      gsap.fromTo(
+        ".sample-info p",
+        { opacity: 0 },
+        { opacity: 1, duration: 2.5, delay: 2.15 }
+      );
 
-    // Adjust the starburst parameters based on the analysis data
-    createStarburst(100, durationBasedOnBPM);
-    createSky();
+      gsap.to(".letter", {
+        color: colorBasedOnCentroid,
+        duration: 1.5,
+        repeat: -1,
+        yoyo: true,
+        delay: 1,
+        stagger: 0.5,
+        repeatDelay: 0.5,
+      });
+
+      // Adjust the starburst parameters based on the analysis data
+      createStarburst(100, durationBasedOnBPM);
+      createSky();
+    }
   } catch (error) {
     console.error("error in createSongAnimation:", error);
   }
