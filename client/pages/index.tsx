@@ -27,10 +27,6 @@ function Index() {
     }
   }, [audio?.currentSongIndex, audio?.loadNewSong]);
 
-  if (!audio || !audio.currentSongIndex || !audio.loadNewSong) {
-    return null;
-  }
-
   return (
     <main className="flex flex-col min-h-screen items-center justify-center">
       <div className="night-sky" id="night-sky"></div>
@@ -46,7 +42,6 @@ function Index() {
           <NewMultiTrackPlayer />
         </div>
         <div id="starburst" className="starburst"></div>
-        <div>{/* <BackgroundAnimation /> */}</div>
         <LinerNotes />
       </ErrorBoundary>
     </main>

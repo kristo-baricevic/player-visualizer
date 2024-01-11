@@ -4,7 +4,7 @@ import ErrorBoundary from "./ErrorBoundary";
 import PlayButton from "./PlayButton";
 import ProgressBar from "./ProgressBar";
 import AlbumCover from "./AlbumCover";
-import NavigationButtons from "./NavigationButtons";
+import NavigationDashboard from "./NavigationDashboard";
 import TrackButtons from "./TrackButtons";
 
 declare global {
@@ -40,6 +40,8 @@ const NewMultiTrackPlayer = () => {
     console.log("New progress:", newProgress);
   };
 
+  console.log("Audio Context:", audio);
+
   return (
     <ErrorBoundary>
       <div className="music-container" id="music-container">
@@ -52,12 +54,10 @@ const NewMultiTrackPlayer = () => {
             <ProgressBar progress={progress} onSetProgress={setProgress} />
           )}
         </div>
-        <PlayButton
+        <NavigationDashboard
           isLoading={isLoading}
           isPlaying={isPlaying}
-          onClick={playPauseTracks}
-        />
-        <NavigationButtons
+          onPlayPauseClick={playPauseTracks}
           onPrevClick={prevSong}
           onNextClick={nextSong}
           isValidIndex={isValidIndex}

@@ -337,14 +337,12 @@ export const AudioProvider: React.FC<AudioProviderProps> = ({ children }) => {
   const loadSong = useCallback(
     (songIndex: number) => {
       if (currentTrack.song) {
-        Object.values(currentTrack.song).forEach(track => track.unload());
-      };
+        Object.values(currentTrack.song).forEach((track) => track.unload());
+      }
 
       try {
         setTrackLoadingStatus({ track1: true, track2: true, track3: true });
-        const basePath = `http://localhost:8080/music/song${
-          songIndex + 1
-        }`;
+        const basePath = `http://localhost:8080/music/song${songIndex + 1}`;
         // const newSong = {
         //   track1: new Howl({
         //     src: [`${basePath}/track1.mp3`],
