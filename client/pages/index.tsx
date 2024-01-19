@@ -8,6 +8,9 @@ import { animationForSong, clearAnimations } from "@/src/utils/animations";
 import { useSelector } from "react-redux";
 import { RootState } from "@/src/store";
 import * as Essentia from 'essentia.js';
+const fs = require('fs');
+
+// @ts-nocheck
 
 function Index() {
   const audio = useContext(AudioPlayerContext);
