@@ -19,6 +19,7 @@ interface AudioContextState {
   nextSong: () => void;
   prevSong: () => void;
   isMuted: boolean[];
+  getAudioContext: () => AudioContext | null;
   loadNewSong: (songIndex: number) => void;
   playPauseTracks: () => void;
   toggleMuteTrack: (trackIndex: number) => void;
@@ -59,6 +60,9 @@ export const AudioPlayerContext = createContext<AudioContextState | undefined>(
 );
 
 export const AudioProvider: React.FC<AudioProviderProps> = ({ children }) => {
+  
+  const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
   const dispatch = useAppDispatch();
 
   const [currentTrack, setCurrentTrack] = useState<CurrentTrackState>({
@@ -81,6 +85,11 @@ export const AudioProvider: React.FC<AudioProviderProps> = ({ children }) => {
 
   const [volume, setVolume] = useState(1);
   const [progress, setProgress] = useState(0);
+
+  const getAudioContext = () => {
+    return audioContext as AudioContext; 
+  };
+
 
   const loadSong = useCallback(
     (songIndex: number) => {
@@ -234,6 +243,7 @@ export const AudioProvider: React.FC<AudioProviderProps> = ({ children }) => {
         isMuted: currentTrack.isMuted,
         isLoading,
         progress,
+        getAudioContext,
         currentSong: currentTrack.song,
         loadNewSong: loadSong,
         nextSong,
