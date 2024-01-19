@@ -7,6 +7,9 @@ export enum AudioActionTypes {
   SET_VOLUME = "SET_VOLUME",
   FETCH_SONGS_SUCCESS = "FETCH_SONGS_SUCCESS",
   FETCH_SONGS_FAILURE = "FETCH_SONGS_FAILURE",
+  ANALYZE_SONG_REQUEST = "ANALYZE_SONG_REQUEST",
+  ANALYZE_SONG_SUCCESS = "ANALYZE_SONG_SUCCESS",
+  ANALYZE_SONG_FAILURE = "ANALYZE_SONG_FAILURE",
 }
 
 interface BaseAction {
@@ -51,6 +54,21 @@ interface FetchSongsFailureAction extends BaseAction {
   type: AudioActionTypes.FETCH_SONGS_FAILURE;
 }
 
+interface AnalyzeSongRequestAction extends BaseAction {
+  type: typeof AudioActionTypes.ANALYZE_SONG_REQUEST;
+}
+
+interface AnalyzeSongSuccessAction extends BaseAction {
+  type: typeof AudioActionTypes.ANALYZE_SONG_SUCCESS;
+  payload: number;
+}
+
+interface AnalyzeSongFailureAction extends BaseAction {
+  type: typeof AudioActionTypes.ANALYZE_SONG_FAILURE;
+  payload: string;
+}
+
+
 export type AudioActions =
   | PlayPauseTracksAction
   | LoadSongAction
@@ -59,4 +77,7 @@ export type AudioActions =
   | PrevSongAction
   | SetVolumeAction
   | FetchSongsSuccessAction
-  | FetchSongsFailureAction;
+  | FetchSongsFailureAction
+  | AnalyzeSongRequestAction
+  | AnalyzeSongSuccessAction
+  | AnalyzeSongFailureAction;

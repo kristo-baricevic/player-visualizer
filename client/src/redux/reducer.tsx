@@ -15,6 +15,7 @@ export interface AudioState {
   currentSongIndex: number;
   trackLinerNotes: SongData[] | null;
   isMuted: boolean[];
+  analysisData: number;
   isLoading: boolean;
   isPlaying: boolean;
   error: boolean;
@@ -27,13 +28,14 @@ const initialState: AudioState = {
   isMuted: [false, false, false],
   isLoading: false,
   isPlaying: true,
+  analysisData: 0,
   error: false,
   volume: 1,
 };
 
 const audioReducer = (
   state: AudioState = initialState,
-  action: AudioActions | { type: unknown }
+  action: AudioActions 
 ): AudioState => {
   switch (action.type) {
     case AudioActionTypes.PLAY_PAUSE_TRACKS:
@@ -105,6 +107,32 @@ const audioReducer = (
         error: true,
         isLoading: false,
       };
+
+    case AudioActionTypes.ANALYZE_SONG_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+      };
+
+    case AudioActionTypes.ANALYZE_SONG_SUCCESS:
+      if (action.type === AudioActionTypes.ANALYZE_SONG_SUCCESS) {
+        return {
+          ...state,
+          isLoading: false,
+          analysisData: action.payload, // TypeScript should recognize payload here
+        };
+      }
+      break;
+
+    case AudioActionTypes.ANALYZE_SONG_FAILURE:
+      if (action.type === AudioActionTypes.ANALYZE_SONG_FAILURE) {
+        return {
+          ...state,
+          isLoading: false,
+          error: true, 
+        };
+      }
+      break;
 
     default:
       return state;

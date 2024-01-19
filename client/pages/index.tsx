@@ -7,13 +7,16 @@ import { AudioPlayerContext } from "../src/components/AudioPlayerContext";
 import { animationForSong, clearAnimations } from "@/src/utils/animations";
 import { useSelector } from "react-redux";
 import { RootState } from "@/src/store";
+import { useDispatch } from "react-redux";
 import * as Essentia from 'essentia.js';
-const fs = require('fs');
+import { analyzeAudio } from "@/src/redux/thunk";
 
 // @ts-nocheck
 
 function Index() {
   const audio = useContext(AudioPlayerContext);
+  const dispatch = useDispatch();
+
   const songsData = useSelector(
     (state: RootState) => state.audio.trackLinerNotes
   );
@@ -29,29 +32,12 @@ function Index() {
    * @returns {number} The spectral centroid of the audio data.
    */
 
-  function analyzeAudio() {
-    if (analyser) {
-      const bufferLength = analyser.frequencyBinCount;
-      if (typeof bufferLength === "number") {
-        const dataArray = new Float32Array(bufferLength);
-        analyser.getFloatFrequencyData(dataArray);
 
-        const spectralCentroid = essentia.spectralCentroid(dataArray);
-        return spectralCentroid;
-      } else {
-        console.error("bufferLength is not defined");
-        return null;
-      }
-    } else {
-      console.error("Analyser is not defined");
-      return null;
-    }
-  }
 
   useEffect(() => {
     if (audio) {
       try {
-        const analysisData1 = analyzeAudio();
+        const analysisData1 = await dispatch(analyzeAudio());
         const { currentSongIndex, loadNewSong } = audio;
         clearAnimations();
         animationForSong(120, analysisData1, 0);

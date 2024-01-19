@@ -4,6 +4,7 @@
         "essentia",
         "fortawesome",
         "nocheck",
-        "reduxjs"
+        "reduxjs",
+        "tailwindcss"
     ]
 }

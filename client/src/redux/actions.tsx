@@ -98,4 +98,20 @@ export const toggleMuteTrack = (trackIndex: number) => {
   };
 };
 
+
+
+export const analyzeSongRequest = () => ({
+  type: AudioActionTypes.ANALYZE_SONG_REQUEST,
+});
+
+export const analyzeSongSuccess = (analysisData: number) => ({
+  type: AudioActionTypes.ANALYZE_SONG_SUCCESS,
+  payload: analysisData,
+});
+
+export const analyzeSongFailure = (error: string) => ({
+  type: AudioActionTypes.ANALYZE_SONG_FAILURE,
+  payload: error,
+});
+
 export type SongsActions = FetchSongsSuccessAction | FetchSongsFailureAction;

@@ -5,6 +5,7 @@ const path = require("path");
 const PORT = 8080;
 
 const songRouter = require("./controllers/songController");
+const { analyzeSong } = require("./controllers/songAnalyzerController");
 
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -19,6 +20,8 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.use("/server-api", songRouter);
+app.use("/analyze", analyzeSong);
+
 
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
