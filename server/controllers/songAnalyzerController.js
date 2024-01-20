@@ -3,7 +3,11 @@
 const express = require("express");
 const router = express.Router();
 const Essentia = require('essentia.js');
-const fetch = require('node-fetch'); 
+let fetch;
+
+(async () => {
+  fetch = (await import('node-fetch')).default;
+})();
 
 const analyzeSong = async (req, res) => {
     try {
@@ -18,7 +22,7 @@ const analyzeSong = async (req, res) => {
         // Initialize Essentia and process the audio data
         const essentia = new Essentia();
         const analysisResult = essentia.someAnalysisFunction(audioData);
-
+        console.log("analysisResult: " + analysisResult);
         // Send back the analysis results
         res.json({ analysisResult });
     } catch (error) {

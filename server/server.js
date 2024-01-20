@@ -5,7 +5,7 @@ const path = require("path");
 const PORT = 8080;
 
 const songRouter = require("./controllers/songController");
-const { analyzeSong } = require("./controllers/songAnalyzerController");
+const songAnalyzerRouter = require("./controllers/songAnalyzerController");
 
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -21,7 +21,7 @@ app.use(cors(corsOptions));
 
 app.use("/server-api", songRouter);
 //should this be get or set or post?
-app.set("/analyze", analyzeSong);
+app.use("/analyze", songAnalyzerRouter);
 
 
 app.listen(PORT, () => {
