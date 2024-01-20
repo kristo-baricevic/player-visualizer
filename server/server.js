@@ -8,8 +8,6 @@ const songRouter = require("./controllers/songController");
 const songAnalyzerRouter = require("./controllers/songAnalyzerController");
 
 app.use(express.static(path.join(__dirname, "public")));
-
-// Serve static files.
 app.use("/images", express.static(path.join(__dirname, "public/images")));
 app.use("/music", express.static(path.join(__dirname, "public/music")));
 
