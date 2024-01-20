@@ -1,7 +1,7 @@
 // songController.test.js
 const request = require('supertest');
 const express = require('express');
-const songRouter = require("./controllers/songController");
+const songRouter = require("../controllers/songController");
 
 // Mock the songs data
 const mockSongsData = [
@@ -10,7 +10,7 @@ const mockSongsData = [
 ];
 
 // Mock the songController module
-jest.mock('./songController', () => {
+jest.mock('../controllers/songController', () => {
   return {
     loadInitialSong: jest.fn((req, res) => res.json(mockSongsData)),
     getSongById: jest.fn((req, res) => {

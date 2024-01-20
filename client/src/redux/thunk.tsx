@@ -8,17 +8,16 @@ import {
 import { RootState } from "../store";
 import { Action, Dispatch } from "redux";
 
+// thunks.js
 export const analyzeAudio = (
   currentSongIndex: number
 ): ThunkAction<void, RootState, unknown, Action<string>> => {
   return async (dispatch: Dispatch) => {
-    console.log("outside thunk action" + currentSongIndex);
-
     dispatch(analyzeSongRequest());
     try {
-      console.log("inside thunk action" + currentSongIndex);
       const response = await fetch(
-        `http://localhost:8080/analyze/${currentSongIndex + 1}`
+        `http://localhost:8080/analyze/${currentSongIndex + 1}`,
+        { method: 'POST' }  // Add this line to make it a POST request
       );
       if (!response.ok) {
         throw new Error("Server responded with an error.");

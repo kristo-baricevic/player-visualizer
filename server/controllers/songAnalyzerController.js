@@ -2,11 +2,8 @@
 const express = require("express");
 const router = express.Router();
 const Essentia = require("essentia.js");
-let fetch;
+const fetch = require('node-fetch');
 
-(async () => {
-  fetch = (await import("node-fetch")).default;
-})();
 
 const analyzeSong = async (req, res) => {
   console.log("analyzeSong params" + req.params.songIndex);
