@@ -35,7 +35,7 @@ const initialState: AudioState = {
 
 const audioReducer = (
   state: AudioState = initialState,
-  action: AudioActions 
+  action: AudioActions
 ): AudioState => {
   switch (action.type) {
     case AudioActionTypes.PLAY_PAUSE_TRACKS:
@@ -119,7 +119,7 @@ const audioReducer = (
         return {
           ...state,
           isLoading: false,
-          analysisData: action.payload, 
+          analysisData: action.payload,
         };
       }
       break;
@@ -129,7 +129,7 @@ const audioReducer = (
         return {
           ...state,
           isLoading: false,
-          error: true, 
+          error: true,
         };
       }
       break;

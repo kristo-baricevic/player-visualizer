@@ -1,4 +1,10 @@
-import React, { useEffect, useState, useContext, useCallback, Dispatch } from "react";
+import React, {
+  useEffect,
+  useState,
+  useContext,
+  useCallback,
+  Dispatch,
+} from "react";
 // import BackgroundAnimation from "@/components/BackgroundAnimation";
 import MultiTrackPlayer from "../src/components/MultiTrackPlayer";
 import LinerNotes from "../src/components/LinerNotes";
@@ -29,17 +35,20 @@ function Index() {
     (state: RootState) => state.audio.analysisData
   );
 
-  const loadDataAnalysis = useCallback((currentSongIndex: number) => {
-    if (!currentSongIndex) return;
-    dispatch(analyzeAudio(currentSongIndex));
-  }, [dispatch]);
+  const loadDataAnalysis = useCallback(
+    (currentSongIndex: number) => {
+      if (!currentSongIndex) return;
+      dispatch(analyzeAudio(currentSongIndex));
+    },
+    [dispatch]
+  );
 
   useEffect(() => {
     if (audio) {
       try {
         const { currentSongIndex, loadNewSong } = audio;
         loadDataAnalysis(currentSongIndex);
-  
+
         // Wait for the Redux state to update with the analysis data
         if (analysisData) {
           clearAnimations();
@@ -51,8 +60,12 @@ function Index() {
         console.error("Error in Index component useEffect:", error);
       }
     }
-  }, [audio?.loadNewSong, audio?.currentSongIndex, loadDataAnalysis, analysisData]);
-  
+  }, [
+    audio?.loadNewSong,
+    audio?.currentSongIndex,
+    loadDataAnalysis,
+    analysisData,
+  ]);
 
   return (
     <main className="flex flex-col min-h-screen items-center justify-center">

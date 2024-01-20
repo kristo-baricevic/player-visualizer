@@ -10,6 +10,7 @@ let fetch;
 })();
 
 const analyzeSong = async (req, res) => {
+    console.log("analyzeSong params" +req.params.songIndex);
     try {
         // Assuming audio data is sent in the request body
         const currentSongIndex = req.params.songIndex; 

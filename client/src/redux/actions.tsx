@@ -99,19 +99,6 @@ export const toggleMuteTrack = (trackIndex: number) => {
   };
 };
 
-// export const fetchAnalysisData = async (currentSongIndex: number) => {
-//   if (!currentSongIndex) {
-//     return;
-//   }
-
-//   try {
-//     const result = await analyzeAudio(currentSongIndex);
-//     return result;
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };
-
 export const analyzeSongRequest = () => ({
   type: AudioActionTypes.ANALYZE_SONG_REQUEST,
 });

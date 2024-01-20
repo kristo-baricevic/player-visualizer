@@ -1,2 +1,2 @@
-declare module 'essentia.js';
+// declare module 'essentia.js';
 

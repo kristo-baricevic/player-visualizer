@@ -68,7 +68,6 @@ interface AnalyzeSongFailureAction extends BaseAction {
   payload: string;
 }
 
-
 export type AudioActions =
   | PlayPauseTracksAction
   | LoadSongAction

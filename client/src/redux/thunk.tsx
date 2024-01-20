@@ -5,23 +5,29 @@ import {
   analyzeSongSuccess,
   analyzeSongFailure,
 } from "./actions";
-import * as Essentia from "essentia.js";
 import { RootState } from "../store";
 import { Action, Dispatch } from "redux";
 
-export const analyzeAudio = (currentSongIndex: number): ThunkAction<void, RootState, unknown, Action<string>> => {
-    return async (dispatch: Dispatch) => {
-      dispatch(analyzeSongRequest());
-      try {
-        const response = await fetch(`http://localhost:8080/analyze/${currentSongIndex}`);
-        if (!response.ok) {
-          throw new Error("Server responded with an error.");
-        }
-        const analysisResult = await response.json();
-        dispatch(analyzeSongSuccess(analysisResult));
-      } catch (error) {
-        dispatch(analyzeSongFailure(error instanceof Error ? error.message : String(error)));
+export const analyzeAudio = (
+  currentSongIndex: number
+): ThunkAction<void, RootState, unknown, Action<string>> => {
+  return async (dispatch: Dispatch) => {
+    dispatch(analyzeSongRequest());
+    try {
+      const response = await fetch(
+        `http://localhost:8080/analyze/${currentSongIndex}`
+      );
+      if (!response.ok) {
+        throw new Error("Server responded with an error.");
       }
-    };
+      const analysisResult = await response.json();
+      dispatch(analyzeSongSuccess(analysisResult));
+    } catch (error) {
+      dispatch(
+        analyzeSongFailure(
+          error instanceof Error ? error.message : String(error)
+        )
+      );
+    }
   };
-  
+};

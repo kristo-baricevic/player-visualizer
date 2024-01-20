@@ -14,7 +14,7 @@ app.use("/images", express.static(path.join(__dirname, "public/images")));
 app.use("/music", express.static(path.join(__dirname, "public/music")));
 
 const corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: "http://localhost:3000",
   optionsSuccessStatus: 200,
 };
 app.use(cors(corsOptions));
@@ -22,7 +22,6 @@ app.use(cors(corsOptions));
 app.use("/server-api", songRouter);
 //should this be get or set or post?
 app.use("/analyze", songAnalyzerRouter);
-
 
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
