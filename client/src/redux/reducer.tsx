@@ -119,7 +119,7 @@ const audioReducer = (
         return {
           ...state,
           isLoading: false,
-          analysisData: action.payload, // TypeScript should recognize payload here
+          analysisData: action.payload, 
         };
       }
       break;

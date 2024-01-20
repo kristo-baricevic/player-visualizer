@@ -2,6 +2,7 @@ import { ThunkAction } from "redux-thunk";
 import { Action, Dispatch } from "redux";
 import { AudioActionTypes } from "./actionTypes";
 import { AudioState } from "./reducer";
+import { analyzeAudio } from "./thunk";
 
 type ThunkResult<R> = ThunkAction<R, RootState, undefined, Action<string>>;
 
@@ -98,7 +99,18 @@ export const toggleMuteTrack = (trackIndex: number) => {
   };
 };
 
+// export const fetchAnalysisData = async (currentSongIndex: number) => {
+//   if (!currentSongIndex) {
+//     return;
+//   }
 
+//   try {
+//     const result = await analyzeAudio(currentSongIndex);
+//     return result;
+//   } catch (error) {
+//     console.error(error);
+//   }
+// };
 
 export const analyzeSongRequest = () => ({
   type: AudioActionTypes.ANALYZE_SONG_REQUEST,

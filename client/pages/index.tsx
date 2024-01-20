@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useCallback, Dispatch } from "react";
 // import BackgroundAnimation from "@/components/BackgroundAnimation";
 import MultiTrackPlayer from "../src/components/MultiTrackPlayer";
 import LinerNotes from "../src/components/LinerNotes";
@@ -8,20 +8,28 @@ import { animationForSong, clearAnimations } from "@/src/utils/animations";
 import { useSelector } from "react-redux";
 import { RootState } from "@/src/store";
 import { useDispatch } from "react-redux";
-import * as Essentia from 'essentia.js';
+import * as Essentia from "essentia.js";
 import { analyzeAudio } from "@/src/redux/thunk";
+import { AudioActions } from "@/src/redux/actionTypes";
+import { ThunkDispatch } from "redux-thunk";
 
 // @ts-nocheck
 
 function Index() {
+  const [analysisResult, setAnalysisResult] = useState(null);
   const audio = useContext(AudioPlayerContext);
-  const dispatch = useDispatch();
+  type AppDispatch = ThunkDispatch<RootState, void, AudioActions>;
+
+  const dispatch: AppDispatch = useDispatch<AppDispatch>();
 
   const songsData = useSelector(
     (state: RootState) => state.audio.trackLinerNotes
   );
 
   const audioContext = audio?.getAudioContext();
+  const analysisData = useSelector(
+    (state: RootState) => state.audio.analysisData
+  );
 
   const essentia = new Essentia.Client();
   const analyser = audioContext?.createAnalyser();
@@ -32,22 +40,32 @@ function Index() {
    * @returns {number} The spectral centroid of the audio data.
    */
 
+  const loadDataAnalysis = useCallback((currentSongIndex: number) => {
+    if (!currentSongIndex) return;
+    dispatch(analyzeAudio(currentSongIndex));
+  }, [dispatch]);
+  
 
 
   useEffect(() => {
     if (audio) {
       try {
-        const analysisData1 = await dispatch(analyzeAudio());
         const { currentSongIndex, loadNewSong } = audio;
-        clearAnimations();
-        animationForSong(120, analysisData1, 0);
-        loadNewSong(currentSongIndex);
+        loadDataAnalysis(currentSongIndex);
+  
+        // Wait for the Redux state to update with the analysis data
+        if (analysisData) {
+          clearAnimations();
+          animationForSong(120, analysisData, 0);
+          loadNewSong(currentSongIndex);
+        }
         console.log(songsData);
       } catch (error) {
         console.error("Error in Index component useEffect:", error);
       }
     }
-  }, [audio?.currentSongIndex, audio?.loadNewSong]);
+  }, [audio?.loadNewSong, audio?.currentSongIndex, loadDataAnalysis, analysisData]);
+  
 
   return (
     <main className="flex flex-col min-h-screen items-center justify-center">

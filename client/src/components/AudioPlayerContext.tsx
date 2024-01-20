@@ -5,6 +5,7 @@ import { fetchSongs } from "../redux/actions";
 import { useDispatch } from "react-redux";
 import { Howl } from "howler";
 import { AppDispatch } from "../store";
+import { analyzeAudio } from "../redux/thunk";
 
 export const useAppDispatch: () => AppDispatch = useDispatch;
 
@@ -12,7 +13,6 @@ export const useAppDispatch: () => AppDispatch = useDispatch;
 interface AudioContextState {
   isPlaying: boolean;
   isLoading: boolean;
-  analysisData: number;
   currentSongIndex: number;
   progress: number;
   currentSong: { [key: string]: Howl } | null;
@@ -142,6 +142,8 @@ export const AudioProvider: React.FC<AudioProviderProps> = ({ children }) => {
     [dispatch]
   );
 
+
+
   const playPauseTracks = useCallback(() => {
     if (!currentTrack.song) return;
 
@@ -256,7 +258,6 @@ export const AudioProvider: React.FC<AudioProviderProps> = ({ children }) => {
         currentSong: currentTrack.song,
         loadNewSong: loadSong,
         nextSong,
-        analysisData,
         volume,
         prevSong,
         playPauseTracks,
