@@ -9,8 +9,8 @@ const cors = require("cors");
 const path = require("path");
 const PORT = 8080;
 
-const songRouter = require("./controllers/songController");
-const songAnalyzerRouter = require("./controllers/songAnalyzerController");
+const songRouter = require("../controllers/songController");
+const songAnalyzerRouter = require("../controllers/songAnalyzerController");
 
 const corsOptions = {
   origin: "http://localhost:3000",
