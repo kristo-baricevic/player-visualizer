@@ -46,7 +46,9 @@ function Index() {
   useEffect(() => {
     if (audio) {
       try {
+        console.log("useEffect working");
         const { currentSongIndex, loadNewSong } = audio;
+        console.log("songIndex check " + currentSongIndex);
         loadDataAnalysis(currentSongIndex);
 
         // Wait for the Redux state to update with the analysis data

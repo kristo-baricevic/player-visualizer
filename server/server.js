@@ -20,8 +20,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.use("/server-api", songRouter);
-//should this be get or set or post?
-app.use("/analyze", songAnalyzerRouter);
+app.use("/analyze/:songIndex", songAnalyzerRouter);
 
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);

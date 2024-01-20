@@ -14,6 +14,7 @@ export const analyzeAudio = (
   return async (dispatch: Dispatch) => {
     dispatch(analyzeSongRequest());
     try {
+      console.log("thunk action" + currentSongIndex);
       const response = await fetch(
         `http://localhost:8080/analyze/${currentSongIndex}`
       );
