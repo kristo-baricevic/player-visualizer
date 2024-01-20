@@ -23,16 +23,16 @@ const analyzeSong = async (req, res) => {
 
     // Initialize Essentia and process the audio data
     const essentia = new Essentia();
-    const analysisResult = essentia.someAnalysisFunction(audioData);
-    console.log("analysisResult: " + analysisResult);
+    const audioAnalysisResult = essentia.SpectralCentroid(audioData);
+    console.log("analysisResult: " + audioAnalysisResult);
     // Send back the analysis results
-    res.json({ analysisResult });
+    res.json({ analysisResult: audioAnalysisResult });
   } catch (error) {
     console.error("Error analyzing song:", error);
     res.status(500).send("Error analyzing song");
   }
 };
 
-router.post("/analyze/:songIndex", analyzeSong);
+router.post("/:songIndex", analyzeSong);
 
 module.exports = router;
