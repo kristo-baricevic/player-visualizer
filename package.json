@@ -11,6 +11,8 @@
     "redux-thunk": "^3.1.0"
   },
   "devDependencies": {
-    "@types/react-redux": "^7.1.33"
+    "@types/react-redux": "^7.1.33",
+    "jest": "^29.7.0",
+    "supertest": "^6.3.4"
   }
 }
