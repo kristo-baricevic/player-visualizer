@@ -8,7 +8,6 @@ import { animationForSong, clearAnimations } from "@/src/utils/animations";
 import { useSelector } from "react-redux";
 import { RootState } from "@/src/store";
 import { useDispatch } from "react-redux";
-import * as Essentia from "essentia.js";
 import { analyzeAudio } from "@/src/redux/thunk";
 import { AudioActions } from "@/src/redux/actionTypes";
 import { ThunkDispatch } from "redux-thunk";
@@ -16,7 +15,6 @@ import { ThunkDispatch } from "redux-thunk";
 // @ts-nocheck
 
 function Index() {
-  const [analysisResult, setAnalysisResult] = useState(null);
   const audio = useContext(AudioPlayerContext);
   type AppDispatch = ThunkDispatch<RootState, void, AudioActions>;
 
@@ -31,21 +29,10 @@ function Index() {
     (state: RootState) => state.audio.analysisData
   );
 
-  const essentia = new Essentia.Client();
-  const analyser = audioContext?.createAnalyser();
-
-  /**
-   * This function analyzes the audio data using the Essentia library and returns the spectral centroid of the audio data.
-   * @param {Float32Array} dataArray - The audio data array.
-   * @returns {number} The spectral centroid of the audio data.
-   */
-
   const loadDataAnalysis = useCallback((currentSongIndex: number) => {
     if (!currentSongIndex) return;
     dispatch(analyzeAudio(currentSongIndex));
   }, [dispatch]);
-  
-
 
   useEffect(() => {
     if (audio) {

@@ -1,11 +1,19 @@
 // songAnalyzerController.js
-
+"use strict";
+const express = require("express");
+const router = express.Router();
 const Essentia = require('essentia.js');
+const fetch = require('node-fetch'); 
 
 const analyzeSong = async (req, res) => {
     try {
         // Assuming audio data is sent in the request body
-        const audioData = req.body.audioData;
+        const currentSongIndex = req.params.songIndex; 
+        const audioResponse = await fetch(`http://localhost:8080/music/song${currentSongIndex}/track3.mp3`);
+        if (!audioResponse.ok) {
+            throw new Error('Failed to fetch audio file');
+        }
+        const audioData = await audioResponse.arrayBuffer();
 
         // Initialize Essentia and process the audio data
         const essentia = new Essentia();
@@ -19,5 +27,5 @@ const analyzeSong = async (req, res) => {
     }
 };
 
-router.get("/analyze", analyzeSong);
+router.get("/analyze/:songIndex", analyzeSong); // Use URL parameter for song index
 module.exports = router;

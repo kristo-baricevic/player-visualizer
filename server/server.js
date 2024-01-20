@@ -20,7 +20,8 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.use("/server-api", songRouter);
-app.use("/analyze", analyzeSong);
+//should this be get or set or post?
+app.set("/analyze", analyzeSong);
 
 
 app.listen(PORT, () => {
