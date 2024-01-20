@@ -1,7 +1,7 @@
 // songController.test.js
 const request = require('supertest');
 const express = require('express');
-const songRouter = require('./songController');
+const songRouter = require("./controllers/songController");
 
 // Mock the songs data
 const mockSongsData = [
