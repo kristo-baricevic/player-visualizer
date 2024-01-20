@@ -12,11 +12,13 @@ export const analyzeAudio = (
   currentSongIndex: number
 ): ThunkAction<void, RootState, unknown, Action<string>> => {
   return async (dispatch: Dispatch) => {
+    console.log("outside thunk action" + currentSongIndex);
+
     dispatch(analyzeSongRequest());
     try {
-      console.log("thunk action" + currentSongIndex);
+      console.log("inside thunk action" + currentSongIndex);
       const response = await fetch(
-        `http://localhost:8080/analyze/${currentSongIndex}`
+        `http://localhost:8080/analyze/${currentSongIndex + 1}`
       );
       if (!response.ok) {
         throw new Error("Server responded with an error.");

@@ -30,14 +30,13 @@ function Index() {
     (state: RootState) => state.audio.trackLinerNotes
   );
 
-  const audioContext = audio?.getAudioContext();
   const analysisData = useSelector(
     (state: RootState) => state.audio.analysisData
   );
 
   const loadDataAnalysis = useCallback(
     (currentSongIndex: number) => {
-      if (!currentSongIndex) return;
+      if (currentSongIndex === null || currentSongIndex === undefined) return;
       dispatch(analyzeAudio(currentSongIndex));
     },
     [dispatch]
@@ -45,28 +44,24 @@ function Index() {
 
   useEffect(() => {
     if (audio) {
-      try {
-        console.log("useEffect working");
-        const { currentSongIndex, loadNewSong } = audio;
-        console.log("songIndex check " + currentSongIndex);
-        loadDataAnalysis(currentSongIndex);
+      const { currentSongIndex, loadNewSong } = audio;
+      loadDataAnalysis(currentSongIndex);
 
-        // Wait for the Redux state to update with the analysis data
-        if (analysisData) {
-          clearAnimations();
-          animationForSong(120, analysisData, 0);
-          loadNewSong(currentSongIndex);
-        }
-        console.log(songsData);
-      } catch (error) {
-        console.error("Error in Index component useEffect:", error);
+      if (analysisData) {
+        clearAnimations();
+        animationForSong(120, analysisData, 0);
+        loadNewSong(currentSongIndex);
       }
     }
+    // including audio creates infinite loop,
+    // so using eslint-disable-next-line to skip this warning
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    audio?.loadNewSong,
-    audio?.currentSongIndex,
     loadDataAnalysis,
     analysisData,
+    audio?.currentSongIndex,
+    audio?.loadNewSong,
   ]);
 
   return (
