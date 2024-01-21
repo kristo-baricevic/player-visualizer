@@ -1,25 +1,29 @@
 "use strict";
 const express = require("express");
 const router = express.Router();
-const Essentia = require("essentia.js");
+let essentia = require("essentia.js");
 const fetch = require('node-fetch');
+let fs = require('fs');
+const Mp32Wav = require('mp3-to-wav');
 
+const createWavFile = ( currentSongIndex ) => { 
+    const wavSource = new Mp32Wav(`http://localhost:8080/music/song${currentSongIndex}/track3.mp3`).toWav();
+    return wavSource.toWav();
+}
 
 const analyzeSong = async (req, res) => {
   console.log("analyzeSong params" + req.params.songIndex);
   try {
     // Assuming audio data is sent in the request body
     const currentSongIndex = req.params.songIndex;
-    const audioResponse = await fetch(
-      `http://localhost:8080/music/song${currentSongIndex}/track3.mp3`
-    );
+    const audioResponse = await createWavFile(currentSongIndex);
     if (!audioResponse.ok) {
       throw new Error("Failed to fetch audio file");
     }
+    console.log(audioResponse);
     const audioData = await audioResponse.arrayBuffer();
 
     // Initialize Essentia and process the audio data
-    const essentia = new Essentia();
     const audioAnalysisResult = essentia.SpectralCentroid(audioData);
     console.log("analysisResult: " + audioAnalysisResult);
     // Send back the analysis results
