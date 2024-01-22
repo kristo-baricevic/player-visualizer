@@ -91,11 +91,12 @@ export const animationForSong = (
   try {
     clearAnimations();
 
+    console.log("centroidDifferences: ", centroidDifferences);
+
     if (!bpm || !centroidDifferences.length) {
       return null;
     }
 
-    const durationBasedOnBPM = 60 / bpm;
     let currentCentroidIndex = 0;
 
     // Function to update the animation based on the centroid differences

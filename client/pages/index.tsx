@@ -43,13 +43,17 @@ function Index() {
   );
 
   useEffect(() => {
+    console.log("tempo check", analysisData.bpm);
+    console.log("spectral check", analysisData.differences);
+
+
     if (audio && analysisData) {
       clearAnimations();
 
       const { currentSongIndex, loadNewSong } = audio;
       loadDataAnalysis(currentSongIndex);
-
       animationForSong(analysisData.bpm, analysisData.differences); 
+    
       loadNewSong(currentSongIndex);
     }
     // including audio creates infinite loop,
