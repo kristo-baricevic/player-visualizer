@@ -103,7 +103,11 @@ export const analyzeSongRequest = () => ({
   type: AudioActionTypes.ANALYZE_SONG_REQUEST,
 });
 
-export const analyzeSongSuccess = (analysisData: number) => ({
+export const analyzeSongSuccess = (analysisData: {
+    centroids: number[];
+    differences: number[];
+    bpm: number | null;
+},) => ({
   type: AudioActionTypes.ANALYZE_SONG_SUCCESS,
   payload: analysisData,
 });

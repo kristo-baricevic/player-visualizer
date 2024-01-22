@@ -43,15 +43,14 @@ function Index() {
   );
 
   useEffect(() => {
-    if (audio) {
+    if (audio && analysisData) {
+      clearAnimations();
+
       const { currentSongIndex, loadNewSong } = audio;
       loadDataAnalysis(currentSongIndex);
 
-      if (analysisData) {
-        clearAnimations();
-        animationForSong(120, analysisData, 0);
-        loadNewSong(currentSongIndex);
-      }
+      animationForSong(analysisData.bpm, analysisData.differences); 
+      loadNewSong(currentSongIndex);
     }
     // including audio creates infinite loop,
     // so using eslint-disable-next-line to skip this warning

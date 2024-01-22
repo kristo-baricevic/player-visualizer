@@ -86,15 +86,28 @@ export const createSky = () => {
 
 export const animationForSong = (
   bpm: number | null,
-  analysisData1: number,
-  analysisData2: number
+  centroidDifferences: number[]
 ) => {
   try {
     clearAnimations();
-    // Use BPM to set animation duration
-    if (!bpm) {
+
+    if (!bpm || !centroidDifferences.length) {
       return null;
     }
+
+    const durationBasedOnBPM = 60 / bpm;
+    let currentCentroidIndex = 0;
+
+    // Function to update the animation based on the centroid differences
+    const updateAnimation = () => {
+      const currentDifference = centroidDifferences[currentCentroidIndex];
+      currentCentroidIndex =
+        (currentCentroidIndex + 1) % centroidDifferences.length;
+
+      // Adjust color based on centroid difference
+      const colorBasedOnCentroid = `hsl(${currentDifference % 360}, 100%, 50%)`;
+      adjustColor(colorBasedOnCentroid);
+    };
 
     const boxElement = document.querySelector(".box");
     const sampleInfoH3Element = document.querySelector(".sample-info h3");
@@ -109,11 +122,8 @@ export const animationForSong = (
     ) {
       const durationBasedOnBPM = 60 / bpm;
 
-      // Use spectral centroid to set color
-      const colorBasedOnCentroid = `hsl(${analysisData1 % 360}, 100%, 50%)`;
-
       // Use spectral rolloff to set Y-axis movement
-      const yMovementBasedOnRolloff = analysisData2 / 1000;
+      const yMovementBasedOnRolloff = 40 / 1000;
 
       gsap.to(".box", {
         rotate: 360,
@@ -134,7 +144,7 @@ export const animationForSong = (
       );
 
       gsap.to(".letter", {
-        color: colorBasedOnCentroid,
+        color: "pink",
         duration: 1.5,
         repeat: -1,
         yoyo: true,
@@ -142,6 +152,8 @@ export const animationForSong = (
         stagger: 0.5,
         repeatDelay: 0.5,
       });
+
+      setInterval(updateAnimation, durationBasedOnBPM * 1000);
 
       // Adjust the starburst parameters based on the analysis data
       createStarburst(100, durationBasedOnBPM);
@@ -169,4 +181,16 @@ export const clearAnimations = () => {
   } catch (error) {
     console.error("error in clearAnimations:", error);
   }
+};
+
+// Function to adjust color
+const adjustColor = (color: string) => {
+  const lines = document.querySelectorAll("#starburst .line");
+  lines.forEach((line) => {
+    gsap.to(line, {
+      backgroundColor: color,
+      duration: 1,
+      ease: "power2.inOut",
+    });
+  });
 };
