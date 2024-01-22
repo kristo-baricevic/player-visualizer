@@ -51,8 +51,6 @@ const analyzeWav = async (audioBuffer) => {
     console.error("Error in analyzeWav: audioBuffer is null");
     return null;
   }
-
-  console.log("buffer looks like:", audioBuffer);
   let spectralCentroids = [];
 
   try {
@@ -64,12 +62,11 @@ const analyzeWav = async (audioBuffer) => {
         true,
         FRAME_SIZE
       );
-      console.log("frame windowed", frame_windowed.frame);
+
       let centroid = essentia.Centroid(
         essentia.Spectrum(frame_windowed["frame"])["spectrum"]
       );
       spectralCentroids.push(centroid);
-      return spectralCentroids;
     }
 
     let centroidDifferences = [];

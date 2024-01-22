@@ -16,10 +16,12 @@ export interface AudioState {
   trackLinerNotes: SongData[] | null;
   isMuted: boolean[];
   analysisData: {
-    centroids: number[];
-    differences: number[];
+    analysis: {
+      centroids: number[];
+      differences: number[];
+    };
     bpm: number | null;
-  };  
+  };
   isLoading: boolean;
   isPlaying: boolean;
   error: boolean;
@@ -33,10 +35,12 @@ const initialState: AudioState = {
   isLoading: false,
   isPlaying: true,
   analysisData: {
-    centroids: [],
-    differences: [],
+    analysis: {
+      centroids: [],
+      differences: [],
+    },
     bpm: null,
-  },  
+  },
   error: false,
   volume: 1,
 };

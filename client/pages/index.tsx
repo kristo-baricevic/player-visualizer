@@ -44,7 +44,7 @@ function Index() {
 
   useEffect(() => {
     console.log("tempo check", analysisData.bpm);
-    console.log("spectral check", analysisData.differences);
+    console.log("spectral check", analysisData.analysis.centroids);
 
 
     if (audio && analysisData) {
@@ -52,7 +52,7 @@ function Index() {
 
       const { currentSongIndex, loadNewSong } = audio;
       loadDataAnalysis(currentSongIndex);
-      animationForSong(analysisData.bpm, analysisData.differences); 
+      animationForSong(analysisData.bpm, analysisData.analysis.differences); 
     
       loadNewSong(currentSongIndex);
     }

@@ -104,10 +104,12 @@ export const analyzeSongRequest = () => ({
 });
 
 export const analyzeSongSuccess = (analysisData: {
-    centroids: number[];
-    differences: number[];
-    bpm: number | null;
-},) => ({
+  analysis: {
+    centroids: [];
+    differences: [];
+  };
+  bpm: null;
+}) => ({
   type: AudioActionTypes.ANALYZE_SONG_SUCCESS,
   payload: analysisData,
 });

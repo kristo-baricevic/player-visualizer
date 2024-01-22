@@ -61,10 +61,12 @@ interface AnalyzeSongRequestAction extends BaseAction {
 interface AnalyzeSongSuccessAction extends BaseAction {
   type: typeof AudioActionTypes.ANALYZE_SONG_SUCCESS;
   payload: {
-    centroids: number[];
-    differences: number[];
-    bpm: number | null;
-  }; 
+    analysis: {
+      centroids: [];
+      differences: [];
+    };
+    bpm: null;
+  };
 }
 
 interface AnalyzeSongFailureAction extends BaseAction {
