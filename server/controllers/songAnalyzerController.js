@@ -71,7 +71,7 @@ const analyzeWav = async (audioBuffer) => {
 
     let centroidDifferences = [];
     for (let i = 1; i < spectralCentroids.length; i++) {
-      let diff = Math.abs(spectralCentroids[i] - spectralCentroids[i - 1]);
+      let diff = Math.abs(spectralCentroids[i].centroid - spectralCentroids[i - 1].centroid);
       centroidDifferences.push(diff);
     }
 
@@ -81,6 +81,8 @@ const analyzeWav = async (audioBuffer) => {
     let normalizedDifferences = centroidDifferences.map(
       (diff) => diff / maxDiff
     );
+
+    console.log("Spectral dif: ", normalizedDifferences);
 
     return { centroids: spectralCentroids, differences: normalizedDifferences };
   } catch (error) {
