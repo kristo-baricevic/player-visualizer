@@ -1,90 +1,79 @@
 "use strict";
 const express = require("express");
 const router = express.Router();
-const essentia = require("essentia.js");
+var essentia = require('essentia.js');
 const fetch = require('node-fetch');
 const fs = require('fs').promises; 
+const wav = require('node-wav');
 const Mp32Wav = require('mp3-to-wav');
-const wavDecoder = require('wav-decoder');
+
+const FRAME_SIZE = 2048;
+const HOP_SIZE = 1024;
+
+const convertMp3ToWav = async (mp3FilePath, wavFileDir, songIndex) => {
+    return new Promise((resolve, reject) => {
+        console.log("Attempting to convert MP3 to WAV file:");
+        const mp32Wav = new Mp32Wav(mp3FilePath);
+        mp32Wav.exec();
+        console.log("end MP3 to WAV conversion:");
+
+    });
+};
+
 
 const decodeWavFile = async (wavFilePath) => {
-    try {
-        // Read the WAV file
-        const buffer = await fs.readFile(wavFilePath);
-
-        // Decode the WAV file
-        const audioData = await wavDecoder.decode(buffer);
-
-        // Now audioData contains the decoded audio data
-        // Including sample rate, channel data, etc.
-        return audioData;
-    } catch (error) {
-        console.error("Error decoding WAV file:", error);
-        throw error;
-    }
+    // if (!wavFilePath) {
+    //     console.error("Error in decodeWavFile: wavFilePath is null");
+    //     return null;
+    // }
+    // try {
+    //     console.log("Attempting to decode WAV file:", wavFilePath);
+    //     const buffer = await fs.readFile(wavFilePath);
+    //     let audio = wav.decode(buffer);
+    //     return audio.channelData[0]; // Assuming mono audio
+    // } catch (error) {
+    //     console.error("Error decoding WAV file:", error);
+    //     throw error;
+    // }
 };
 
+const analyzeWav = async (audioBuffer) => {
+    // if (!audioBuffer) {
+    //     console.error("Error in analyzeWav: audioBuffer is null");
+    //     return null;
+    // }
 
-// Function to analyze WAV data
-const analyzeWav = async (wavData) => {
-    try {
-        const decodedWavFile = await decodeWavFile(wavData);
-        const audioAnalysisResult = essentia.SpectralCentroid(decodedWavFile);
-        return audioAnalysisResult;
-    } catch (error) {
-        console.error("Error in analyzeWav:", error);
-        throw error;
-    }
+    // try {
+    //     let spectralCentroids = [];
+    //     for (let i = 0; i < audioBuffer.length/HOP_SIZE; i++) {
+    //         let frame = audioBuffer.slice(HOP_SIZE*i, HOP_SIZE*i + FRAME_SIZE);
+    //         var frame_windowed = essentia.Windowing(essentia.arrayToVector(frame), true, FRAME_SIZE);
+    //         let centroid = essentia.Centroid(essentia.Spectrum(frame_windowed['frame'])['spectrum']);
+    //         spectralCentroids.push(centroid);
+    //     }
+    //     return spectralCentroids;
+    // } catch (error) {
+    //     console.error("Error in analyzeWav:", error);
+    //     throw error;
+    // }
 };
-
-const createWavFile = async (songIndex) => {
-    try {
-        if (!songIndex) {
-            songIndex = 1;
-        }
-
-        // Directory to save the WAV files
-        const wavFileDir = '/public/music/wavs';
-
-        // Construct the MP3 file URL
-        const mp3FilePath = `http://localhost:8080/music/song${songIndex}/track3.mp3`;
-
-        // Initialize Mp32Wav with the MP3 file URL and the directory to save the WAV file
-        const mp32Wav = new Mp32Wav(mp3FilePath, wavFileDir);
-
-        // Convert and save the WAV file
-        mp32Wav.exec();
-
-        // Construct the path to the saved WAV file
-        const wavFilePath = `${wavFileDir}/song${songIndex}/track3.wav`;
-
-        return wavFilePath;
-    } catch (error) {
-        console.error("Error in createWavFile:", error);
-        throw error;
-    }
-};
-
 
 const analyzeSong = async (req, res) => {
     try {
         const currentSongIndex = req.params.songIndex;
-        console.log("Analyzing song with index:", currentSongIndex);
+        const mp3FilePath = `http://localhost:8080/music/song${currentSongIndex}/track3.mp3`;
+        const wavFileDir = '/public/music/wavs';
 
-        const wavFilePath = await createWavFile(currentSongIndex);
-        console.log("WAV file path:", wavFilePath);
+        const wavFilePath = await convertMp3ToWav(mp3FilePath, wavFileDir, currentSongIndex);
+    //     const audioBuffer = await decodeWavFile(wavFilePath);
+    //     const analysisResult = await analyzeWav(audioBuffer);
 
-        const analysisResult = await analyzeWav(wavFilePath);
-        console.log("Analysis result:", analysisResult);
-
-        res.json({ analysisResult: analysisResult });
+    //     res.json({ analysisResult: analysisResult });
     } catch (error) {
         console.error("Error analyzing song:", error);
         res.status(500).send("Error analyzing song");
     }
 };
 
-
 router.post("/:songIndex", analyzeSong);
-
 module.exports = router;
