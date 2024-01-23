@@ -62,7 +62,6 @@ function Index() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     loadDataAnalysis,
-    analysisData,
     audio?.currentSongIndex,
     audio?.loadNewSong,
   ]);

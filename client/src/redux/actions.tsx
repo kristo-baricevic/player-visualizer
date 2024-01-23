@@ -1,6 +1,6 @@
 import { ThunkAction } from "redux-thunk";
 import { Action, Dispatch } from "redux";
-import { AudioActionTypes } from "./actionTypes";
+import { AudioActionTypes } from './actionTypes';
 import { AudioState } from "./reducer";
 import { analyzeAudio } from "./thunk";
 
@@ -117,6 +117,33 @@ export const analyzeSongSuccess = (analysisData: {
 export const analyzeSongFailure = (error: string) => ({
   type: AudioActionTypes.ANALYZE_SONG_FAILURE,
   payload: error,
+});
+
+export const deleteWavFile = (songIndex: number) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const response = await fetch(`http://localhost:8080/delete-wav/${songIndex}`, { method: 'POST' });
+      if (!response.ok) {
+        throw new Error('Failed to delete WAV file');
+      }
+      console.log("WAV file deleted successfully");
+      dispatch({ type: AudioActionTypes.WAV_FILE_DELETED, payload: songIndex });
+    } catch (error) {
+      console.error("Error deleting WAV file:", error);
+      dispatch({ type: AudioActionTypes.WAV_FILE_DELETION_ERROR, payload: error });
+    }
+  };
+};
+
+export const wavFileDeleted = (songIndex: number) => ({
+  type: AudioActionTypes.WAV_FILE_DELETED,
+  payload: songIndex,
+});
+
+
+export const wavFileDeletionError = (errorMessage: string) => ({
+  type: AudioActionTypes.WAV_FILE_DELETION_ERROR,
+  payload: errorMessage,
 });
 
 export type SongsActions = FetchSongsSuccessAction | FetchSongsFailureAction;

@@ -109,6 +109,7 @@ const analyzeSong = async (req, res) => {
         wavFileDir,
         currentSongIndex
       );
+      
       const audioBuffer = await decodeWavFile(wavFilePath);
       if (!audioBuffer) {
         throw new Error("Audio buffer is null");

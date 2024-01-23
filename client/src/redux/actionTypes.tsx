@@ -10,6 +10,8 @@ export enum AudioActionTypes {
   ANALYZE_SONG_REQUEST = "ANALYZE_SONG_REQUEST",
   ANALYZE_SONG_SUCCESS = "ANALYZE_SONG_SUCCESS",
   ANALYZE_SONG_FAILURE = "ANALYZE_SONG_FAILURE",
+  WAV_FILE_DELETED = "WAV_FILE_DELETED",
+  WAV_FILE_DELETION_ERROR = "WAV_FILE_DELETION_ERROR",
 }
 
 interface BaseAction {
@@ -74,6 +76,16 @@ interface AnalyzeSongFailureAction extends BaseAction {
   payload: string;
 }
 
+interface WavFileDeletedAction extends BaseAction {
+  type: typeof AudioActionTypes.WAV_FILE_DELETED;
+  payload: number; 
+}
+
+interface WavFileDeletionErrorAction extends BaseAction {
+  type: typeof AudioActionTypes.WAV_FILE_DELETION_ERROR;
+  payload: string;
+}
+
 export type AudioActions =
   | PlayPauseTracksAction
   | LoadSongAction
@@ -85,4 +97,6 @@ export type AudioActions =
   | FetchSongsFailureAction
   | AnalyzeSongRequestAction
   | AnalyzeSongSuccessAction
-  | AnalyzeSongFailureAction;
+  | AnalyzeSongFailureAction
+  | WavFileDeletedAction
+  | WavFileDeletionErrorAction;
