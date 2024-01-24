@@ -17,16 +17,20 @@ const LinerNotes = () => {
   const error = useSelector((state: RootState) => state?.audio?.error);
   useEffect(() => {
     dispatch(fetchSongs());
-  }, [dispatch]);
+    console.log("liner notes song index", currentSongIndex);
+  }, [dispatch, currentSongIndex]); 
 
   if (error) {
     return <div>Error: {error}</div>;
   }
 
-  const currentSong = trackLinerNotes && trackLinerNotes[currentSongIndex];
-
+  const currentSong = trackLinerNotes?.find(track => track.id === currentSongIndex + 1);
   if (!currentSong) {
     return <div>Loading song information...</div>;
+  }
+
+  if (currentSong) {
+    console.log("currentSong", currentSongIndex);
   }
 
   const samplesList =

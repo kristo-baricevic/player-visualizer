@@ -72,6 +72,7 @@ export const AudioProvider: React.FC<AudioProviderProps> = ({ children }) => {
       setAudioContext(ac);
     }
   }, []);
+  
 
   const getAudioContext = () => {
     return audioContext as AudioContext; 
@@ -99,6 +100,13 @@ export const AudioProvider: React.FC<AudioProviderProps> = ({ children }) => {
 
   const [volume, setVolume] = useState(1);
   const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    console.log("Current track index changed:", currentTrack.index);
+    if (trackLinerNotes[currentTrack.index]) {
+      setTrackLinerNotes([trackLinerNotes[currentTrack.index]]);
+    }
+  }, [currentTrack.index]);
 
   const loadSong = useCallback(
     (songIndex: number) => {
@@ -182,19 +190,24 @@ export const AudioProvider: React.FC<AudioProviderProps> = ({ children }) => {
 
   // Add next and previous song functions
   const nextSong = useCallback(() => {
+    console.log("next song callback");
     //stop current song
     if (currentTrack.song) {
       Object.values(currentTrack.song).forEach((track) => track.stop());
     }
 
     const nextIndex = (currentTrack.index + 1) % 5;
+    console.log("next song index",nextIndex);
+
     loadSong(nextIndex);
+    console.log("currentTrack.index", currentTrack.index);
     setCurrentTrack((prev) => ({
       ...prev,
       index: nextIndex,
       isPlaying: false,
     }));
-  }, [currentTrack, loadSong]);
+  }, [currentTrack.index, loadSong]);
+  
 
   const prevSong = useCallback(() => {
     //stop current song
@@ -204,12 +217,13 @@ export const AudioProvider: React.FC<AudioProviderProps> = ({ children }) => {
 
     const prevIndex = (currentTrack.index - 1 + 5) % 5;
     loadSong(prevIndex);
+    console.log("currentTrack.index", currentTrack.index);
     setCurrentTrack((prev) => ({
       ...prev,
       index: prevIndex,
       isPlaying: false,
     }));
-  }, [currentTrack, loadSong]);
+  }, [currentTrack.index, loadSong]);
 
   const changeVolume = useCallback(
     (newVolume: number) => {

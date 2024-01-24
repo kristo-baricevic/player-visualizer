@@ -81,6 +81,7 @@ export const nextSong =
     const { audio } = getState();
     const nextIndex = (audio.currentSongIndex + 1) % 5;
     dispatch({ type: AudioActionTypes.NEXT_SONG, payload: nextIndex });
+    dispatch(loadSong(nextIndex));
   };
 
 export const prevSong =
@@ -88,8 +89,8 @@ export const prevSong =
   (dispatch, getState) => {
     const { audio } = getState();
     const prevIndex = (audio.currentSongIndex - 1) % 5;
-    //   const prevIndex = (audio.currentSongIndex - 1 + audio.trackLinerNotes.length) % audio.trackLinerNotes.length;
     dispatch({ type: AudioActionTypes.PREV_SONG, payload: prevIndex });
+    dispatch(loadSong(prevIndex));
   };
 
 export const toggleMuteTrack = (trackIndex: number) => {

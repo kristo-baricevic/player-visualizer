@@ -44,28 +44,23 @@ function Index() {
   );
 
   useEffect(() => {
- 
-
-
     if (audio && analysisData) {
       clearAnimations();
 
       const { currentSongIndex, loadNewSong } = audio;
+      console.log("song index", currentSongIndex);
       loadDataAnalysis(currentSongIndex);
       console.log("tempo check", analysisData.bpm);
       console.log("spectral check", analysisData);
       loadNewSong(currentSongIndex);
     }
-    animationForSong(analysisData.bpm, analysisData.analysisResult.differences); 
+    animationForSong(analysisData.bpm, analysisData.analysisResult.differences);
+
     // including audio creates infinite loop,
     // so using eslint-disable-next-line to skip this warning
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    loadDataAnalysis,
-    audio?.currentSongIndex,
-    audio?.loadNewSong,
-  ]);
+  }, [loadDataAnalysis, audio?.currentSongIndex, audio?.loadNewSong]);
 
   useEffect(() => {
     if (analysisData.analysisResult.differences.length > 0) {
@@ -73,7 +68,6 @@ function Index() {
       dispatch(deleteWavFile());
     }
   }, [analysisData, dispatch]);
-  
 
   return (
     <main className="flex flex-col min-h-screen items-center justify-center">

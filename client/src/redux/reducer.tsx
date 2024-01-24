@@ -51,6 +51,7 @@ const audioReducer = (
   state: AudioState = initialState,
   action: AudioActions
 ): AudioState => {
+  console.log('Reducer action received:', action.type);
   switch (action.type) {
     case AudioActionTypes.PLAY_PAUSE_TRACKS:
       return { ...state, isPlaying: !state.isPlaying };
@@ -77,6 +78,7 @@ const audioReducer = (
       return { ...state, isMuted: updatedIsMuted };
 
     case AudioActionTypes.NEXT_SONG:
+      console.log('NEXT_SONG action:', action.payload); 
       const nextSongAction = action as {
         type: typeof AudioActionTypes.NEXT_SONG;
         payload: number;
@@ -88,6 +90,7 @@ const audioReducer = (
       };
 
     case AudioActionTypes.PREV_SONG:
+      console.log('PREV_SONG action:', action.payload);
       const prevSongAction = action as {
         type: typeof AudioActionTypes.PREV_SONG;
         payload: number;
