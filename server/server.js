@@ -5,7 +5,7 @@ const path = require("path");
 const PORT = 8080;
 const songRouter = require("./controllers/songController");
 const songAnalyzerRouter = require("./controllers/songAnalyzerController");
-const wavDeletionRouter = require("./controllers/wavDeletionController");
+const wavDeleteRouter = require("./controllers/wavDeleteController");
 
 
 const corsOptions = {
@@ -21,7 +21,7 @@ app.use("/music", express.static(path.join(__dirname, "public/music")));
 
 app.use("/server-api", songRouter);
 app.use("/analyze", songAnalyzerRouter);
-app.use("/delete-wav", wavDeletionRouter); 
+app.use("/delete-wav", wavDeleteRouter); 
 
 
 // Error handling middleware

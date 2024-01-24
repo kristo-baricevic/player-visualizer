@@ -17,6 +17,7 @@ import { useDispatch } from "react-redux";
 import { analyzeAudio } from "@/src/redux/thunk";
 import { AudioActions } from "@/src/redux/actionTypes";
 import { ThunkDispatch } from "redux-thunk";
+import { deleteWavFile } from "@/src/redux/actions";
 
 // @ts-nocheck
 
@@ -43,8 +44,7 @@ function Index() {
   );
 
   useEffect(() => {
-    console.log("tempo check", analysisData.bpm);
-    console.log("spectral check", analysisData);
+ 
 
 
     if (audio && analysisData) {
@@ -52,10 +52,11 @@ function Index() {
 
       const { currentSongIndex, loadNewSong } = audio;
       loadDataAnalysis(currentSongIndex);
-      animationForSong(analysisData.bpm, analysisData.analysisResult.differences); 
-    
+      console.log("tempo check", analysisData.bpm);
+      console.log("spectral check", analysisData);
       loadNewSong(currentSongIndex);
     }
+    animationForSong(analysisData.bpm, analysisData.analysisResult.differences); 
     // including audio creates infinite loop,
     // so using eslint-disable-next-line to skip this warning
 
@@ -65,6 +66,14 @@ function Index() {
     audio?.currentSongIndex,
     audio?.loadNewSong,
   ]);
+
+  useEffect(() => {
+    if (analysisData.analysisResult.differences.length > 0) {
+      console.log("attempt to delete WAV file");
+      dispatch(deleteWavFile());
+    }
+  }, [analysisData, dispatch]);
+  
 
   return (
     <main className="flex flex-col min-h-screen items-center justify-center">

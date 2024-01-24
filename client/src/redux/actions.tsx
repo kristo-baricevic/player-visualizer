@@ -119,15 +119,15 @@ export const analyzeSongFailure = (error: string) => ({
   payload: error,
 });
 
-export const deleteWavFile = (songIndex: number) => {
+export const deleteWavFile = () => {
   return async (dispatch: Dispatch) => {
     try {
-      const response = await fetch(`http://localhost:8080/delete-wav/${songIndex}`, { method: 'POST' });
+      const response = await fetch(`http://localhost:8080/delete-wav/`, { method: 'POST' });
       if (!response.ok) {
         throw new Error('Failed to delete WAV file');
       }
       console.log("WAV file deleted successfully");
-      dispatch({ type: AudioActionTypes.WAV_FILE_DELETED, payload: songIndex });
+      dispatch({ type: AudioActionTypes.WAV_FILE_DELETED});
     } catch (error) {
       console.error("Error deleting WAV file:", error);
       dispatch({ type: AudioActionTypes.WAV_FILE_DELETION_ERROR, payload: error });
@@ -135,9 +135,8 @@ export const deleteWavFile = (songIndex: number) => {
   };
 };
 
-export const wavFileDeleted = (songIndex: number) => ({
-  type: AudioActionTypes.WAV_FILE_DELETED,
-  payload: songIndex,
+export const wavFileDeleted = () => ({
+  type: AudioActionTypes.WAV_FILE_DELETED
 });
 
 

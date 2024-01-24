@@ -78,7 +78,6 @@ interface AnalyzeSongFailureAction extends BaseAction {
 
 interface WavFileDeletedAction extends BaseAction {
   type: typeof AudioActionTypes.WAV_FILE_DELETED;
-  payload: number; 
 }
 
 interface WavFileDeletionErrorAction extends BaseAction {
