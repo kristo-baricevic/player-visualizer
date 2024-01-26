@@ -77,6 +77,8 @@ const MultiTrackPlayer = () => {
     nextSong();
 
   };
+  console.log("Progress in MultiTrackPlayer:", progress);
+  console.log("Progress bar width style:", { width: `${progress}%` });
 
   return (
     <ErrorBoundary>
