@@ -1,6 +1,6 @@
 import { ThunkAction } from "redux-thunk";
 import { Action, Dispatch } from "redux";
-import { AudioActionTypes } from './actionTypes';
+import { AudioActionTypes } from "./actionTypes";
 import { AudioState } from "./reducer";
 import { analyzeAudio } from "./thunk";
 
@@ -20,6 +20,13 @@ interface SongData {
     }[];
   }[];
 }
+
+export const setCurrentSongIndex = (index: number) => {
+  return {
+    type: AudioActionTypes.SET_CURRENT_SONG_INDEX,
+    payload: index,
+  };
+};
 
 export const loadSong = (songIndex: number) => {
   return {
@@ -67,7 +74,7 @@ export const fetchSongs = () => {
       }
       const songsData = await response.json();
       console.log(songsData);
-      dispatch(fetchSongsSuccess(songsData));
+      dispatch(fetchSongsSuccess(songsData as SongData[]));
     } catch (error) {
       console.error("Error fetching songs:", error);
       dispatch(fetchSongsFailure());
@@ -80,7 +87,7 @@ export const nextSong =
   (dispatch, getState) => {
     const { audio } = getState();
     const nextIndex = (audio.currentSongIndex + 1) % 5;
-    dispatch({ type: AudioActionTypes.NEXT_SONG, payload: nextIndex });
+    dispatch(setCurrentSongIndex(nextIndex));
     dispatch(loadSong(nextIndex));
   };
 
@@ -89,7 +96,7 @@ export const prevSong =
   (dispatch, getState) => {
     const { audio } = getState();
     const prevIndex = (audio.currentSongIndex - 1) % 5;
-    dispatch({ type: AudioActionTypes.PREV_SONG, payload: prevIndex });
+    dispatch(setCurrentSongIndex(prevIndex));
     dispatch(loadSong(prevIndex));
   };
 
@@ -123,23 +130,27 @@ export const analyzeSongFailure = (error: string) => ({
 export const deleteWavFile = () => {
   return async (dispatch: Dispatch) => {
     try {
-      const response = await fetch(`http://localhost:8080/delete-wav/`, { method: 'POST' });
+      const response = await fetch(`http://localhost:8080/delete-wav/`, {
+        method: "POST",
+      });
       if (!response.ok) {
-        throw new Error('Failed to delete WAV file');
+        throw new Error("Failed to delete WAV file");
       }
       console.log("WAV file deleted successfully");
-      dispatch({ type: AudioActionTypes.WAV_FILE_DELETED});
+      dispatch({ type: AudioActionTypes.WAV_FILE_DELETED });
     } catch (error) {
       console.error("Error deleting WAV file:", error);
-      dispatch({ type: AudioActionTypes.WAV_FILE_DELETION_ERROR, payload: error });
+      dispatch({
+        type: AudioActionTypes.WAV_FILE_DELETION_ERROR,
+        payload: error,
+      });
     }
   };
 };
 
 export const wavFileDeleted = () => ({
-  type: AudioActionTypes.WAV_FILE_DELETED
+  type: AudioActionTypes.WAV_FILE_DELETED,
 });
-
 
 export const wavFileDeletionError = (errorMessage: string) => ({
   type: AudioActionTypes.WAV_FILE_DELETION_ERROR,

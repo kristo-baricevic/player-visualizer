@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useState, useCallback, useEffect } from "react";
-import { fetchSongs } from "../redux/actions";
+import { fetchSongs, setCurrentSongIndex } from "../redux/actions";
 import { useDispatch } from "react-redux";
 import { Howl } from "howler";
 import { AppDispatch } from "../store";
@@ -198,6 +198,7 @@ export const AudioProvider: React.FC<AudioProviderProps> = ({ children }) => {
 
     const nextIndex = (currentTrack.index + 1) % 5;
     console.log("next song index",nextIndex);
+    dispatch(setCurrentSongIndex(nextIndex)); // Dispatch the action to update the index
 
     loadSong(nextIndex);
     console.log("currentTrack.index", currentTrack.index);
@@ -206,6 +207,7 @@ export const AudioProvider: React.FC<AudioProviderProps> = ({ children }) => {
       index: nextIndex,
       isPlaying: false,
     }));
+    setTrackLinerNotes([trackLinerNotes[nextIndex]]);
   }, [currentTrack.index, loadSong]);
   
 
@@ -216,6 +218,8 @@ export const AudioProvider: React.FC<AudioProviderProps> = ({ children }) => {
     }
 
     const prevIndex = (currentTrack.index - 1 + 5) % 5;
+    dispatch(setCurrentSongIndex(prevIndex)); // Dispatch the action to update the index
+
     loadSong(prevIndex);
     console.log("currentTrack.index", currentTrack.index);
     setCurrentTrack((prev) => ({
@@ -223,6 +227,11 @@ export const AudioProvider: React.FC<AudioProviderProps> = ({ children }) => {
       index: prevIndex,
       isPlaying: false,
     }));
+
+    const trackNumber = currentTrack.index;
+    setTrackLinerNotes([trackLinerNotes[trackNumber]]);
+    console.log(trackLinerNotes);
+    console.log(trackLinerNotes[prevIndex]);
   }, [currentTrack.index, loadSong]);
 
   const changeVolume = useCallback(

@@ -12,6 +12,7 @@ export enum AudioActionTypes {
   ANALYZE_SONG_FAILURE = "ANALYZE_SONG_FAILURE",
   WAV_FILE_DELETED = "WAV_FILE_DELETED",
   WAV_FILE_DELETION_ERROR = "WAV_FILE_DELETION_ERROR",
+  SET_CURRENT_SONG_INDEX = "SET_CURRENT_SONG_INDEX",
 }
 
 interface BaseAction {
@@ -42,6 +43,11 @@ interface PrevSongAction extends BaseAction {
   payload: number;
 }
 
+interface setCurrentSongIndexAction extends BaseAction {
+  type: typeof AudioActionTypes.SET_CURRENT_SONG_INDEX;
+  payload: number;
+}
+
 interface SetVolumeAction extends BaseAction {
   type: typeof AudioActionTypes.SET_VOLUME;
   payload: number;
@@ -49,8 +55,18 @@ interface SetVolumeAction extends BaseAction {
 
 interface FetchSongsSuccessAction extends BaseAction {
   type: AudioActionTypes.FETCH_SONGS_SUCCESS;
-  payload: any[];
+  payload: {
+    id: number;
+    title: string;
+    samples: {
+      parts: {
+        text: string;
+        link?: string;
+      }[];
+    }[];
+  }[];
 }
+
 
 interface FetchSongsFailureAction extends BaseAction {
   type: AudioActionTypes.FETCH_SONGS_FAILURE;
@@ -98,4 +114,5 @@ export type AudioActions =
   | AnalyzeSongSuccessAction
   | AnalyzeSongFailureAction
   | WavFileDeletedAction
-  | WavFileDeletionErrorAction;
+  | WavFileDeletionErrorAction
+  | setCurrentSongIndexAction;

@@ -70,10 +70,12 @@ const MultiTrackPlayer = () => {
 
   const prevSongHandler = () => {
     prevSong();
+
   };
 
   const nextSongHandler = () => {
     nextSong();
+
   };
 
   return (

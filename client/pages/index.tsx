@@ -27,9 +27,7 @@ function Index() {
 
   const dispatch: AppDispatch = useDispatch<AppDispatch>();
 
-  const songsData = useSelector(
-    (state: RootState) => state.audio.trackLinerNotes
-  );
+
 
   const analysisData = useSelector(
     (state: RootState) => state.audio.analysisData

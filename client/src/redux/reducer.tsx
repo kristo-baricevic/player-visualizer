@@ -22,7 +22,6 @@ export interface AudioState {
     };
     bpm: number | null;
   };
-
   isLoading: boolean;
   isPlaying: boolean;
   error: boolean;
@@ -42,7 +41,7 @@ const initialState: AudioState = {
     },
     bpm: null,
   },
-  
+
   error: false,
   volume: 1,
 };
@@ -51,7 +50,7 @@ const audioReducer = (
   state: AudioState = initialState,
   action: AudioActions
 ): AudioState => {
-  console.log('Reducer action received:', action.type);
+  console.log("Reducer action received:", action.type);
   switch (action.type) {
     case AudioActionTypes.PLAY_PAUSE_TRACKS:
       return { ...state, isPlaying: !state.isPlaying };
@@ -78,7 +77,7 @@ const audioReducer = (
       return { ...state, isMuted: updatedIsMuted };
 
     case AudioActionTypes.NEXT_SONG:
-      console.log('NEXT_SONG action:', action.payload); 
+      console.log("NEXT_SONG action:", action.payload);
       const nextSongAction = action as {
         type: typeof AudioActionTypes.NEXT_SONG;
         payload: number;
@@ -90,7 +89,7 @@ const audioReducer = (
       };
 
     case AudioActionTypes.PREV_SONG:
-      console.log('PREV_SONG action:', action.payload);
+      console.log("PREV_SONG action:", action.payload);
       const prevSongAction = action as {
         type: typeof AudioActionTypes.PREV_SONG;
         payload: number;
@@ -109,14 +108,16 @@ const audioReducer = (
       return { ...state, volume: setVolumeAction.payload };
 
     case AudioActionTypes.FETCH_SONGS_SUCCESS:
-      if ("payload" in action && Array.isArray(action.payload)) {
-        return {
-          ...state,
-          trackLinerNotes: action.payload,
-          isLoading: false,
-          error: false,
-        };
-      }
+      const newState = {
+        ...state,
+        trackLinerNotes: action.payload,
+        isLoading: false,
+        error: false,
+      };
+      console.log('New State after FETCH_SONGS_SUCCESS:', newState);
+      return newState;
+    
+      
 
     case AudioActionTypes.FETCH_SONGS_FAILURE:
       return {
@@ -138,8 +139,7 @@ const audioReducer = (
           isLoading: false,
           analysisData: action.payload,
         };
-      }
-      break;
+      };
 
     case AudioActionTypes.ANALYZE_SONG_FAILURE:
       if (action.type === AudioActionTypes.ANALYZE_SONG_FAILURE) {
@@ -148,15 +148,17 @@ const audioReducer = (
           isLoading: false,
           error: true,
         };
-      }
-      break;
+      };
 
+    case AudioActionTypes.SET_CURRENT_SONG_INDEX:
+      return {
+        ...state,
+        currentSongIndex: action.payload,
+      };
 
     default:
       return state;
   }
-
-  return state;
 };
 
 export default audioReducer;
