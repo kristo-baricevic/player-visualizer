@@ -5,7 +5,6 @@ import { AppDispatch, RootState } from "../store";
 import ErrorBoundary from "./ErrorBoundary";
 export const useAppDispatch: () => AppDispatch = useDispatch;
 
-
 const LinerNotes = () => {
   const dispatch = useAppDispatch();
   const audioState = useSelector((state: RootState) => state.audio);

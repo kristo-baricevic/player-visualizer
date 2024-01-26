@@ -1,4 +1,5 @@
 import { gsap } from "gsap";
+import { scaleLinear } from 'd3-scale';
 
 export const createStarburst = (numberOfLines: number, staggerTime: number) => {
   try {
@@ -70,7 +71,7 @@ export const createSky = () => {
         nightSky.appendChild(star);
       }
 
-      //animation
+      // Animation
       gsap.to(star, {
         opacity: Math.random(),
         duration: Math.random() * 2 + 1,
@@ -98,6 +99,7 @@ export const animationForSong = (
     }
 
     let currentCentroidIndex = 0;
+    let currentDifference = centroidDifferences[currentCentroidIndex]; 
 
     // Function to update the animation based on the centroid differences
     const updateAnimation = () => {
@@ -159,11 +161,16 @@ export const animationForSong = (
       // Adjust the starburst parameters based on the analysis data
       createStarburst(100, durationBasedOnBPM);
       createSky();
+
+      // Call the new functions
+      bpmDuration(bpm);
+      adjustRotation(currentDifference * 2);
     }
   } catch (error) {
     console.error("error in createSongAnimation:", error);
   }
 };
+
 
 export const clearAnimations = () => {
   try {
@@ -184,8 +191,34 @@ export const clearAnimations = () => {
   }
 };
 
+
+// Function to adjust BPM duration
+export const bpmDuration = (bpm: number) => {
+  const bpmMultiplier = 60 / bpm;
+  const animationDuration = 2 * bpmMultiplier;
+  
+  gsap.to(".sample-info h3", {
+    opacity: 1,
+    duration: animationDuration,
+    delay: animationDuration / 2,
+  });
+};
+
+// Function to adjust rotation
+export const adjustRotation = (angle: number) => {
+  const lines = document.querySelectorAll("#starburst .line");
+  lines.forEach((line) => {
+    gsap.to(line, {
+      rotation: angle,
+      duration: 1,
+      ease: "power2.inOut",
+    });
+  });
+};
+
+
 // Function to adjust color
-const adjustColor = (color: string) => {
+export const adjustColor = (color: string) => {
   const lines = document.querySelectorAll("#starburst .line");
   lines.forEach((line) => {
     gsap.to(line, {
