@@ -52,9 +52,6 @@ const MultiTrackPlayer = () => {
   } = audio;
 
  
-
-
-
   const handleProgressClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const width = progressContainerRef.current?.clientWidth || 0;
     const clickX = e.nativeEvent.offsetX;

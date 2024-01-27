@@ -151,7 +151,13 @@ export const AudioProvider: React.FC<AudioProviderProps> = ({ children }) => {
     [dispatch]
   );
 
-
+  const updateProgress = useCallback(() => {
+    if (currentTrack.song && currentTrack.isPlaying) {
+      const primaryTrack = currentTrack.song["track1"];
+      const newProgress = (primaryTrack.seek() / primaryTrack.duration()) * 100;
+      setProgress(newProgress);
+    }
+  }, [currentTrack.song, currentTrack.isPlaying]);
 
   const playPauseTracks = useCallback(() => {
     if (!currentTrack.song) return;
@@ -163,6 +169,7 @@ export const AudioProvider: React.FC<AudioProviderProps> = ({ children }) => {
           isPlaying ? track.play() : track.pause()
         );
       }
+      updateProgress();
       return { ...prev, isPlaying };
     });
   }, [currentTrack.song]);
@@ -247,13 +254,7 @@ export const AudioProvider: React.FC<AudioProviderProps> = ({ children }) => {
     [currentTrack.song]
   );
 
-  const updateProgress = useCallback(() => {
-    if (currentTrack.song && currentTrack.isPlaying) {
-      const primaryTrack = currentTrack.song["track1"];
-      const newProgress = (primaryTrack.seek() / primaryTrack.duration()) * 100;
-      setProgress(newProgress);
-    }
-  }, [currentTrack.song, currentTrack.isPlaying]);
+ 
   
   useEffect(() => {
     let animationFrameId: number;
