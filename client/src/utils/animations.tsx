@@ -1,16 +1,31 @@
 import { gsap } from "gsap";
-import { scaleLinear } from 'd3-scale';
+import { scaleLinear } from "d3-scale";
 
-export const createStarburst = (numberOfLines: number, staggerTime: number) => {
+export const createStarburst = (
+  numberOfLines: number,
+  staggerTime: number,
+  centroidDifferences: number[]
+) => {
   try {
     const container = document.getElementById("starburst");
     if (!container) throw new Error("Starburst container not found");
+
+    const minCentroid = Math.min(...centroidDifferences);
+    const maxCentroid = Math.max(...centroidDifferences);
+    const colorScale = scaleLinear()
+      .domain([minCentroid, maxCentroid])
+      .range(["blue", "green", "red", "yellow", "purple"]);
 
     for (let i = 0; i < numberOfLines; i++) {
       const line = document.createElement("div");
       line.className = "line";
       line.style.transform = `rotate(${(360 / numberOfLines) * i}deg)`;
-      line.style.backgroundColor = getRandomColor() as string;
+
+      // Calculate the color based on centroid difference
+      const currentDifference =
+        centroidDifferences[i % centroidDifferences.length];
+      const color = colorScale(currentDifference);
+      line.style.backgroundColor = color;
 
       container.appendChild(line);
 
@@ -89,27 +104,43 @@ export const animationForSong = (
   bpm: number | null,
   centroidDifferences: number[]
 ) => {
-  try {
-    clearAnimations();
 
-    console.log("centroidDifferences: ", centroidDifferences);
+  // Function to change color
+  const changeColor = (centroidDifferences: number[]) => {
+    const minCentroid = Math.min(...centroidDifferences);
+    const maxCentroid = Math.max(...centroidDifferences);
+    const colorRange = ["blue", "green", "red", "yellow", "purple"];
+
+    const colorScale = scaleLinear()
+      .domain([minCentroid, maxCentroid])
+      .range(colorRange);
+
+      return colorScale;
+  };
+
+  try {
+    // Clear existing stars and lines before creating new ones
+    clearAnimations();
 
     if (!bpm || !centroidDifferences.length) {
       return null;
     }
 
     let currentCentroidIndex = 0;
-    let currentDifference = centroidDifferences[currentCentroidIndex]; 
 
     // Function to update the animation based on the centroid differences
     const updateAnimation = () => {
-      const currentDifference = centroidDifferences[currentCentroidIndex];
+      if (centroidDifferences.length === 0) {
+        return;
+      }
       currentCentroidIndex =
-        (currentCentroidIndex + 1) % centroidDifferences.length;
+      (currentCentroidIndex + 1) % centroidDifferences.length;
+      const currentDifference = centroidDifferences[currentCentroidIndex];
+   
 
       // Adjust color based on centroid difference
       const colorBasedOnCentroid = `hsl(${currentDifference % 360}, 100%, 50%)`;
-      adjustColor(colorBasedOnCentroid);
+      changeColor(centroidDifferences);
     };
 
     const boxElement = document.querySelector(".box");
@@ -129,7 +160,7 @@ export const animationForSong = (
       const yMovementBasedOnRolloff = 40 / 1000;
 
       gsap.to(".box", {
-        rotate: 360,
+        rotation: 360,
         y: yMovementBasedOnRolloff,
         duration: durationBasedOnBPM,
       });
@@ -156,21 +187,16 @@ export const animationForSong = (
         repeatDelay: 0.5,
       });
 
-      setInterval(updateAnimation, durationBasedOnBPM * 1000);
+      setInterval(updateAnimation, durationBasedOnBPM * 100);
 
       // Adjust the starburst parameters based on the analysis data
-      createStarburst(100, durationBasedOnBPM);
+      createStarburst(100, durationBasedOnBPM, centroidDifferences);
       createSky();
-
-      // Call the new functions
-      bpmDuration(bpm);
-      adjustRotation(currentDifference * 2);
     }
   } catch (error) {
     console.error("error in createSongAnimation:", error);
   }
 };
-
 
 export const clearAnimations = () => {
   try {
@@ -191,12 +217,11 @@ export const clearAnimations = () => {
   }
 };
 
-
 // Function to adjust BPM duration
 export const bpmDuration = (bpm: number) => {
   const bpmMultiplier = 60 / bpm;
   const animationDuration = 2 * bpmMultiplier;
-  
+
   gsap.to(".sample-info h3", {
     opacity: 1,
     duration: animationDuration,
@@ -216,10 +241,9 @@ export const adjustRotation = (angle: number) => {
   });
 };
 
-
 // Function to adjust color
 export const adjustColor = (color: string) => {
-  const lines = document.querySelectorAll("#starburst .line");
+  const lines = document.querySelectorAll(".line");
   lines.forEach((line) => {
     gsap.to(line, {
       backgroundColor: color,

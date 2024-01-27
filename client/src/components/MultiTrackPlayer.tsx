@@ -53,9 +53,14 @@ const MultiTrackPlayer = () => {
   const setProgress = (e: React.MouseEvent<HTMLDivElement>) => {
     const width = progressContainerRef.current?.clientWidth || 0;
     const clickX = e.nativeEvent.offsetX;
-    const duration = audioRef.current?.duration || 0;
-    if (audioRef.current)
-      audioRef.current.currentTime = (clickX / width) * duration;
+
+    if (audio.currentSong) {
+      const duration = audio.currentSong["track1"].duration();
+      const newTime = (clickX / width) * duration;
+
+      // Seek in all tracks
+      Object.values(audio.currentSong).forEach((track) => track.seek(newTime));
+    }
   };
 
   const handleClickPlayPause = () => {
@@ -70,12 +75,10 @@ const MultiTrackPlayer = () => {
 
   const prevSongHandler = () => {
     prevSong();
-
   };
 
   const nextSongHandler = () => {
     nextSong();
-
   };
   console.log("Progress in MultiTrackPlayer:", progress);
   console.log("Progress bar width style:", { width: `${progress}%` });

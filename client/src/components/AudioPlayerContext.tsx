@@ -253,11 +253,7 @@ export const AudioProvider: React.FC<AudioProviderProps> = ({ children }) => {
       if (currentTrack.song && currentTrack.isPlaying) {
         const primaryTrack = currentTrack.song["track1"];
         const progress = (primaryTrack.seek() / primaryTrack.duration()) * 100;
-        console.log("Current progress:", progress);
-
         setProgress(progress);
-        console.log("Current progress:", progress);
-
         animationFrameId = requestAnimationFrame(updateProgress);
       }
     };
