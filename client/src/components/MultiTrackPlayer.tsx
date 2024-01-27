@@ -44,25 +44,39 @@ const MultiTrackPlayer = () => {
     trackLinerNotes,
     currentSongIndex,
     progress,
+    setProgress,
     prevSong,
     nextSong,
     playPauseTracks,
     toggleMuteTrack,
   } = audio;
 
-  const setProgress = (e: React.MouseEvent<HTMLDivElement>) => {
+ 
+
+
+
+  const handleProgressClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const width = progressContainerRef.current?.clientWidth || 0;
     const clickX = e.nativeEvent.offsetX;
-
+  
     if (audio.currentSong) {
-      const duration = audio.currentSong["track1"].duration();
+      // Assuming all tracks have the same duration
+      const duration = audio.currentSong['track1'].duration(); 
       const newTime = (clickX / width) * duration;
-
+  
       // Seek in all tracks
-      Object.values(audio.currentSong).forEach((track) => track.seek(newTime));
+      Object.values(audio.currentSong).forEach(track => {
+        track.seek(newTime);
+      });
+  
+      // Update the progress state immediately
+      const newProgress = (newTime / duration) * 100;
+      setProgress(newProgress);
     }
   };
-
+  
+  
+  
   const handleClickPlayPause = () => {
     console.log("click");
     playPauseTracks();
@@ -105,8 +119,8 @@ const MultiTrackPlayer = () => {
               <div
                 className="progress-container flex"
                 ref={progressContainerRef}
-                onClick={setProgress}
-              >
+                onClick={handleProgressClick}
+                >
                 <div
                   className="progress"
                   ref={progressRef}

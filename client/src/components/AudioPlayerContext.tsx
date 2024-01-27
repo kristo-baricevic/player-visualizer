@@ -15,6 +15,7 @@ interface AudioContextState {
   isLoading: boolean;
   currentSongIndex: number;
   progress: number;
+  setProgress: (newProgress: number) => void;
   currentSong: { [key: string]: Howl } | null;
   trackLinerNotes: TrackLinerNotes[];
   nextSong: () => void;
@@ -246,26 +247,27 @@ export const AudioProvider: React.FC<AudioProviderProps> = ({ children }) => {
     [currentTrack.song]
   );
 
+  const updateProgress = useCallback(() => {
+    if (currentTrack.song && currentTrack.isPlaying) {
+      const primaryTrack = currentTrack.song["track1"];
+      const newProgress = (primaryTrack.seek() / primaryTrack.duration()) * 100;
+      setProgress(newProgress);
+    }
+  }, [currentTrack.song, currentTrack.isPlaying]);
+  
   useEffect(() => {
     let animationFrameId: number;
-
-    const updateProgress = () => {
-      if (currentTrack.song && currentTrack.isPlaying) {
-        const primaryTrack = currentTrack.song["track1"];
-        const progress = (primaryTrack.seek() / primaryTrack.duration()) * 100;
-        setProgress(progress);
-        animationFrameId = requestAnimationFrame(updateProgress);
-      }
-    };
-
+  
     if (currentTrack.isPlaying) {
       animationFrameId = requestAnimationFrame(updateProgress);
     }
-
+  
     return () => {
-      cancelAnimationFrame(animationFrameId);
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
     };
-  });
+  }, [updateProgress, currentTrack.isPlaying]);
 
   return (
     <AudioPlayerContext.Provider
@@ -276,6 +278,7 @@ export const AudioProvider: React.FC<AudioProviderProps> = ({ children }) => {
         isMuted: currentTrack.isMuted,
         isLoading,
         progress,
+        setProgress,
         getAudioContext,
         currentSong: currentTrack.song,
         loadNewSong: loadSong,
