@@ -166,7 +166,6 @@ export const AudioProvider: React.FC<AudioProviderProps> = ({ children }) => {
           isPlaying ? track.play() : track.pause()
         );
       }
-      updateProgress();
       return { ...prev, isPlaying };
     });
   }, [currentTrack.song]);
@@ -193,6 +192,7 @@ export const AudioProvider: React.FC<AudioProviderProps> = ({ children }) => {
     [currentTrack.isMuted.length, currentTrack.song]
   );
 
+  // Add next and previous song functions
   const nextSong = useCallback(() => {
     console.log("next song callback");
     //stop current song

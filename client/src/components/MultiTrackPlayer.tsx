@@ -74,7 +74,10 @@ const MultiTrackPlayer = () => {
   
   // Play/Pause button click event
   const handleClickPlayPause = () => {
+    //fire the play/pause action
     playPauseTracks();
+
+    //update the play/pause button state in order to change the icon
     if (musicContainerRef.current && isPlaying) {
       musicContainerRef.current?.classList.remove("play");
     } else {

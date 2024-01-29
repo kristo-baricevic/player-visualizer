@@ -70,7 +70,7 @@ function Index() {
   return (
     <main className="flex flex-col min-h-screen items-center justify-center">
       <div className="night-sky" id="night-sky"></div>
-      <div className="page-title flex justify-center">
+      <div className="page-title flex justify-center pb-4">
         {"kr1st0-beats".split("").map((letter, index) => (
           <span key={index} className="letter text-2xl" id="letter">
             {letter}

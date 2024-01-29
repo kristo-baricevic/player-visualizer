@@ -115,9 +115,7 @@ const audioReducer = (
         error: false,
       };
       console.log('New State after FETCH_SONGS_SUCCESS:', newState);
-      return newState;
-    
-      
+      return newState; 
 
     case AudioActionTypes.FETCH_SONGS_FAILURE:
       return {
