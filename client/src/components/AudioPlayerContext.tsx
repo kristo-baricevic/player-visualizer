@@ -5,7 +5,6 @@ import { fetchSongs, setCurrentSongIndex } from "../redux/actions";
 import { useDispatch } from "react-redux";
 import { Howl } from "howler";
 import { AppDispatch } from "../store";
-import { analyzeAudio } from "../redux/thunk";
 
 export const useAppDispatch: () => AppDispatch = useDispatch;
 
