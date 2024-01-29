@@ -63,20 +63,18 @@ export const AudioPlayerContext = createContext<AudioContextState | undefined>(
 );
 
 export const AudioProvider: React.FC<AudioProviderProps> = ({ children }) => {
-  
   const [audioContext, setAudioContext] = useState<AudioContext | null>(null);
 
   useEffect(() => {
     // This code runs only on the client side where 'window' is defined
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       const ac = new (window.AudioContext || window.webkitAudioContext)();
       setAudioContext(ac);
     }
   }, []);
-  
 
   const getAudioContext = () => {
-    return audioContext as AudioContext; 
+    return audioContext as AudioContext;
   };
 
   const dispatch = useAppDispatch();
@@ -205,7 +203,7 @@ export const AudioProvider: React.FC<AudioProviderProps> = ({ children }) => {
     }
 
     const nextIndex = (currentTrack.index + 1) % 5;
-    console.log("next song index",nextIndex);
+    console.log("next song index", nextIndex);
     dispatch(setCurrentSongIndex(nextIndex)); // Dispatch the action to update the index
 
     loadSong(nextIndex);
@@ -217,7 +215,6 @@ export const AudioProvider: React.FC<AudioProviderProps> = ({ children }) => {
     }));
     setTrackLinerNotes([trackLinerNotes[nextIndex]]);
   }, [currentTrack.index, loadSong]);
-  
 
   const prevSong = useCallback(() => {
     //stop current song
@@ -254,15 +251,13 @@ export const AudioProvider: React.FC<AudioProviderProps> = ({ children }) => {
     [currentTrack.song]
   );
 
- 
-  
   useEffect(() => {
     let animationFrameId: number;
-  
+
     if (currentTrack.isPlaying) {
       animationFrameId = requestAnimationFrame(updateProgress);
     }
-  
+
     return () => {
       if (animationFrameId) {
         cancelAnimationFrame(animationFrameId);
