@@ -193,7 +193,6 @@ export const AudioProvider: React.FC<AudioProviderProps> = ({ children }) => {
     [currentTrack.isMuted.length, currentTrack.song]
   );
 
-  // Add next and previous song functions
   const nextSong = useCallback(() => {
     console.log("next song callback");
     //stop current song

@@ -51,7 +51,7 @@ const MultiTrackPlayer = () => {
     toggleMuteTrack,
   } = audio;
 
- 
+ // Set the location of progress bar and audio playhead location with click event 
   const handleProgressClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const width = progressContainerRef.current?.clientWidth || 0;
     const clickX = e.nativeEvent.offsetX;
@@ -72,10 +72,8 @@ const MultiTrackPlayer = () => {
     }
   };
   
-  
-  
+  // Play/Pause button click event
   const handleClickPlayPause = () => {
-    console.log("click");
     playPauseTracks();
     if (musicContainerRef.current && isPlaying) {
       musicContainerRef.current?.classList.remove("play");
@@ -84,15 +82,15 @@ const MultiTrackPlayer = () => {
     }
   };
 
+  // Next song button click event
   const prevSongHandler = () => {
     prevSong();
   };
 
+  // Previous song button click event
   const nextSongHandler = () => {
     nextSong();
   };
-  console.log("Progress in MultiTrackPlayer:", progress);
-  console.log("Progress bar width style:", { width: `${progress}%` });
 
   return (
     <ErrorBoundary>
