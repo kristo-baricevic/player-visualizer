@@ -162,7 +162,7 @@ export const AudioProvider: React.FC<AudioProviderProps> = ({ children }) => {
     setCurrentTrack((prev) => {
       const isPlaying = !prev.isPlaying;
       if (prev.song) {
-        Object.values(prev.song).forEach((track) =>
+        Object.values(prev.song).forEach(track =>
           isPlaying ? track.play() : track.pause()
         );
       }
