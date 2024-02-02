@@ -202,7 +202,7 @@ export const AudioProvider: React.FC<AudioProviderProps> = ({ children }) => {
 
     const nextIndex = (currentTrack.index + 1) % 5;
     console.log("next song index", nextIndex);
-    dispatch(setCurrentSongIndex(nextIndex)); // Dispatch the action to update the index
+    dispatch(setCurrentSongIndex(nextIndex)); 
 
     loadSong(nextIndex);
     console.log("currentTrack.index", currentTrack.index);
