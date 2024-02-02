@@ -51,7 +51,6 @@ const MultiTrackPlayer = () => {
     toggleMuteTrack,
   } = audio;
 
- // Set the location of progress bar and audio playhead location with click event 
   const handleProgressClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const width = progressContainerRef.current?.clientWidth || 0;
     const clickX = e.nativeEvent.offsetX;
