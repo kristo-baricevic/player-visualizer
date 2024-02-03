@@ -99,12 +99,20 @@ export const AudioProvider: React.FC<AudioProviderProps> = ({ children }) => {
   const [volume, setVolume] = useState(1);
   const [progress, setProgress] = useState(0);
 
+
+  /**
+ * Logs a message to the console when the current track index changes.
+ * 
+ * @param {number} currentTrack.index - The index of the current track
+ */
   useEffect(() => {
     console.log("Current track index changed:", currentTrack.index);
     if (trackLinerNotes[currentTrack.index]) {
       setTrackLinerNotes([trackLinerNotes[currentTrack.index]]);
     }
   }, [currentTrack.index]);
+
+
 
   const loadSong = useCallback(
     (songIndex: number) => {
