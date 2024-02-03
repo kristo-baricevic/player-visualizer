@@ -157,6 +157,7 @@ export const AudioProvider: React.FC<AudioProviderProps> = ({ children }) => {
   }, [currentTrack.song, currentTrack.isPlaying]);
 
   const playPauseTracks = useCallback(() => {
+    console.log("playPause callback", currentTrack.isPlaying);
     if (!currentTrack.song) return;
 
     setCurrentTrack((prev) => {
