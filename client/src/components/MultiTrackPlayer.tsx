@@ -12,7 +12,7 @@ import {
   faMicrophone,
   faSpinner,
 } from "@fortawesome/free-solid-svg-icons";
-import ErrorBoundary from "@/src/components/ErrorBoundary";
+import ErrorBoundary from "./ErrorBoundary";
 
 declare global {
   interface Window {

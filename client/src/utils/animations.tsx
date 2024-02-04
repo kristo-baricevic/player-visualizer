@@ -1,5 +1,4 @@
 import { gsap } from "gsap";
-import { scaleLinear } from "d3-scale";
 
 export const createStarburst = (
   numberOfLines: number,
@@ -12,9 +11,6 @@ export const createStarburst = (
 
     const minCentroid = Math.min(...centroidDifferences);
     const maxCentroid = Math.max(...centroidDifferences);
-    const colorScale = scaleLinear()
-      .domain([minCentroid, maxCentroid])
-      .range(["blue", "green", "red", "yellow", "purple"]);
 
     for (let i = 0; i < numberOfLines; i++) {
       const line = document.createElement("div");
@@ -24,8 +20,7 @@ export const createStarburst = (
       // Calculate the color based on centroid difference
       const currentDifference =
         centroidDifferences[i % centroidDifferences.length];
-      const color = colorScale(currentDifference);
-      line.style.backgroundColor = color;
+        line.style.backgroundColor = getRandomColor() as string;
 
       container.appendChild(line);
 
@@ -109,13 +104,9 @@ export const animationForSong = (
   const changeColor = (centroidDifferences: number[]) => {
     const minCentroid = Math.min(...centroidDifferences);
     const maxCentroid = Math.max(...centroidDifferences);
-    const colorRange = ["blue", "green", "red", "yellow", "purple"];
+    const color = (minCentroid * (maxCentroid - minCentroid));
 
-    const colorScale = scaleLinear()
-      .domain([minCentroid, maxCentroid])
-      .range(colorRange);
-
-      return colorScale;
+      return color;
   };
 
   try {

@@ -10,14 +10,14 @@ import MultiTrackPlayer from "../src/components/MultiTrackPlayer";
 import LinerNotes from "../src/components/LinerNotes";
 import ErrorBoundary from "../src/components/ErrorBoundary";
 import { AudioPlayerContext } from "../src/components/AudioPlayerContext";
-import { animationForSong, clearAnimations } from "@/src/utils/animations";
+import { animationForSong, clearAnimations } from "../src/utils/animations";
 import { useSelector } from "react-redux";
-import { RootState } from "@/src/store";
+import { RootState } from "../src/store";
 import { useDispatch } from "react-redux";
-import { analyzeAudio } from "@/src/redux/thunk";
-import { AudioActions } from "@/src/redux/actionTypes";
+import { analyzeAudio } from "../src/redux/thunk";
+import { AudioActions } from "../src/redux/actionTypes";
 import { ThunkDispatch } from "redux-thunk";
-import { deleteWavFile } from "@/src/redux/actions";
+import { deleteWavFile } from "../src/redux/actions";
 
 // @ts-nocheck
 

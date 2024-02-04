@@ -3,5 +3,7 @@
     "@babel/preset-env",
     "@babel/preset-react",
     "@babel/preset-typescript"
-  ]
+  ],
+  "plugins": ["transform-es2015-modules-commonjs"],
+  "sourceType": "module"
 }
