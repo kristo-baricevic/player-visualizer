@@ -1,4 +1,4 @@
-const { analyzeSong } = require('../controllers/songAnalysisController'); 
+const { analyzeSong } = require('../controllers/songAnalyzerController'); 
 
 jest.mock('fs').promises;
 jest.mock('node-fetch');

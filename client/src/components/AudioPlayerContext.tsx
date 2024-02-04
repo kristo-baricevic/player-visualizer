@@ -5,6 +5,8 @@ import { fetchSongs, setCurrentSongIndex } from "../redux/actions";
 import { useDispatch } from "react-redux";
 import { Howl } from "howler";
 import { AppDispatch } from "../store";
+import * as AudioPlayerContextModule from "@/src/components/AudioPlayerContext"; // Import the module where your context is defined
+
 
 export const useAppDispatch: () => AppDispatch = useDispatch;
 

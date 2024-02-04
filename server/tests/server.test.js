@@ -4,7 +4,7 @@ const app = express();
 const cors = require("cors");
 const path = require("path");
 
-const songRouter = require("../controllers/songController");
+const songRouter = require("../controllers/songController.js");
 const songAnalyzerRouter = require("../controllers/songAnalyzerController");
 
 const corsOptions = {
