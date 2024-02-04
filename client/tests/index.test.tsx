@@ -1,10 +1,13 @@
+/// <reference types="jest" />
+
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { mocked } from "ts-jest/utils";
 import Index from "../pages/index";
-import { AudioPlayerContext } from "../src/components/AudioPlayerContext";
-import { AudioPlayer } from "../src/components/AudioPlayer";
+import { AudioPlayerContext } from "@/src/components/AudioPlayerContext";
 import { RootState } from "../src/store";
+import { useSelector } from "react-redux";
+import { useState } from "react";
+import "@testing-library/jest-dom/extend-expect";
+
 
 jest.mock("../src/components/AudioPlayer", () => ({
   AudioPlayer: jest.fn(() => null),

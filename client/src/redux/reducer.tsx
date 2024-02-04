@@ -41,7 +41,6 @@ const initialState: AudioState = {
     },
     bpm: null,
   },
-
   error: false,
   volume: 1,
 };
