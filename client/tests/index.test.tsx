@@ -32,7 +32,7 @@ const mockAudioContextValue = {
 interface AudioProviderProps {
   children: ReactNode;
 }
-
+//Test for basic rendering
 describe('Index', () => {
   beforeEach(() => {
     // Mock the context
