@@ -10,7 +10,10 @@ import { ErrorBoundary } from "next/dist/client/components/error-boundary";
 import { ReactNode, useState } from "react";
 import { Provider } from 'react-redux'; // Import the Provider
 import store from '../src/store';
+const fetchMock = require('jest-fetch-mock');
 
+// Mock the fetch function
+jest.mock('node-fetch');
 const mockAudioContextValue = {
   isPlaying: false,
   isLoading: false,
@@ -28,6 +31,23 @@ const mockAudioContextValue = {
   playPauseTracks: jest.fn(),
   toggleMuteTrack: jest.fn(),
 };
+
+
+
+beforeEach(() => {
+  fetchMock.resetMocks();
+  fetchMock.enableMocks();
+});
+
+// Your test cases can now use fetchMock instead of node-fetch
+it('your test description', async () => {
+  // Mock the fetch response
+  fetchMock.mockResponseOnce(JSON.stringify(mockAudioContextValue));
+
+  // Your test logic that uses fetch
+  const response = await fetch('http://example.com/api');
+  // Add your assertions here
+});
 
 interface AudioProviderProps {
   children: ReactNode;

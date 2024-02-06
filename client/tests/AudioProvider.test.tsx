@@ -2,6 +2,8 @@ import React, { ReactNode } from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import { AudioProvider, AudioPlayerContext } from "@/src/components/AudioPlayerContext";
 
+
+
 describe('<AudioProvider />', () => {
   it('should render without crashing', () => {
     const { container } = render(
@@ -12,6 +14,7 @@ describe('<AudioProvider />', () => {
     expect(container).toBeTruthy();
   });
 });
+
 
 interface WrapperProps {
   children: ReactNode;

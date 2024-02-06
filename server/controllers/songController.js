@@ -1,6 +1,7 @@
 "use strict";
 const express = require("express");
 const router = express.Router();
+
 const songsData = [
   {
     id: 1,
@@ -253,11 +254,17 @@ const songsData = [
   },
 ];
 
+
+
 const loadInitialSong = (req, res) => {
+  console.log("request received");
   try {
     if (!songsData) {
       throw new Error("No song data is available");
     }
+    const songId = parseInt(req.query.id);
+    const song = songsData.find((s) => s.id === songId);
+    console.log("song is", song);
     res.json(songsData);
   } catch (error) {
     if (error instanceof Error) {

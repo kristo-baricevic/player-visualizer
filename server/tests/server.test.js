@@ -3,6 +3,7 @@ const request = require("supertest");
 const app = express();
 const cors = require("cors");
 const path = require("path");
+const fetch = require('node-fetch');
 
 const songRouter = require("../controllers/songController.js");
 const songAnalyzerRouter = require("../controllers/songAnalyzerController");
@@ -12,12 +13,42 @@ const corsOptions = {
   optionsSuccessStatus: 200,
 };
 
+jest.mock('node-fetch');
+
 app.use(cors(corsOptions));
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/images", express.static(path.join(__dirname, "public/images")));
 app.use("/music", cors(corsOptions), express.static(path.join(__dirname, "public/music")));
 app.use("/server-api", songRouter);
 app.use("/analyze", songAnalyzerRouter);
+
+const mockContextValue = {
+  isPlaying: false,
+  isLoading: false,
+  currentSongIndex: 0,
+  progress: 0,
+  setProgress: jest.fn(),
+  currentSong: null,
+  trackLinerNotes: [],
+  nextSong: jest.fn(),
+  prevSong: jest.fn(),
+  isMuted: [false, false, false],
+  volume: 1,
+  getAudioContext: jest.fn(),
+  loadNewSong: mockLoadNewSong, 
+  playPauseTracks: jest.fn(),
+  toggleMuteTrack: jest.fn(),
+};
+
+// Mock the fetch function to return a sample response
+(fetch as jest.Mock).mockResolvedValue({
+  ok: true,
+  json: async () => [
+    mockContextValue
+  ],
+});
+
+
 
 // Middleware Tests
 describe("Testing the use of middleware", () => {
