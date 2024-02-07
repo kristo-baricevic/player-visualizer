@@ -40,13 +40,7 @@ const mockContextValue = {
   toggleMuteTrack: jest.fn(),
 };
 
-// Mock the fetch function to return a sample response
-(fetch as jest.Mock).mockResolvedValue({
-  ok: true,
-  json: async () => [
-    mockContextValue
-  ],
-});
+
 
 
 

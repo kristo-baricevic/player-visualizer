@@ -1,19 +1,13 @@
-/// <reference types="jest" />
-/* eslint-env jest */
-import React from 'react'; 
-import { render, screen } from "@testing-library/react";
+import React from "react";
+import { render, waitFor, screen } from "@testing-library/react";
 import Index from "../pages/index";
 import { AudioPlayerContext } from "../src/components/AudioPlayerContext";
-import { RootState } from "../src/store";
-import { useSelector } from "react-redux";
-import { ErrorBoundary } from "next/dist/client/components/error-boundary";
-import { ReactNode, useState } from "react";
-import { Provider } from 'react-redux'; // Import the Provider
-import store from '../src/store';
-const fetchMock = require('jest-fetch-mock');
+import { Provider } from "react-redux";
+import store from "../src/store";
+import fetchMock from "jest-fetch-mock";
 
-// Mock the fetch function
-jest.mock('node-fetch');
+fetchMock.enableMocks();
+
 const mockAudioContextValue = {
   isPlaying: false,
   isLoading: false,
@@ -24,7 +18,7 @@ const mockAudioContextValue = {
   trackLinerNotes: [],
   nextSong: jest.fn(),
   prevSong: jest.fn(),
-  isMuted: [false],
+  isMuted: [false, false, false],
   volume: 1,
   getAudioContext: jest.fn(),
   loadNewSong: jest.fn(),
@@ -32,39 +26,14 @@ const mockAudioContextValue = {
   toggleMuteTrack: jest.fn(),
 };
 
-
-
 beforeEach(() => {
   fetchMock.resetMocks();
-  fetchMock.enableMocks();
 });
 
-// Your test cases can now use fetchMock instead of node-fetch
-it('your test description', async () => {
-  // Mock the fetch response
-  fetchMock.mockResponseOnce(JSON.stringify(mockAudioContextValue));
+describe("Index", () => {
+  it("renders the AudioPlayer component successfully", async () => {
+    fetchMock.mockResponseOnce(JSON.stringify({ data: "Your mock data here" }), { status: 200 });
 
-  // Your test logic that uses fetch
-  const response = await fetch('http://example.com/api');
-  // Add your assertions here
-});
-
-interface AudioProviderProps {
-  children: ReactNode;
-}
-//Test for basic rendering
-describe('Index', () => {
-  beforeEach(() => {
-    // Mock the context
-    jest.mock('../src/components/AudioPlayerContext', () => ({
-      // Provide your mock context object here
-      AudioPlayerContext: {
-        Provider: ({ children }: { children: React.ReactNode }) => children,
-      },
-    }));
-  });
-
-  it('should render the AudioPlayer component', () => {
     render(
       <Provider store={store}>
         <AudioPlayerContext.Provider value={mockAudioContextValue}>
@@ -72,5 +41,23 @@ describe('Index', () => {
         </AudioPlayerContext.Provider>
       </Provider>
     );
+
+    // Example of waiting for an element to appear as a result of an async operation
+    // await waitFor(() => expect(screen.getByTestId("some-element-id")).toBeInTheDocument());
+  });
+
+  it("handles fetch error correctly", async () => {
+    fetchMock.mockReject(new Error("Failed to fetch"));
+
+    render(
+      <Provider store={store}>
+        <AudioPlayerContext.Provider value={mockAudioContextValue}>
+          <Index />
+        </AudioPlayerContext.Provider>
+      </Provider>
+    );
+
+    // Example of waiting for an error message or some indication of fetch failure
+    // await waitFor(() => expect(screen.getByText("Error message or fallback UI")).toBeInTheDocument());
   });
 });
