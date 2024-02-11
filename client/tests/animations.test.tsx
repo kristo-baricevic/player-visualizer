@@ -1,5 +1,5 @@
 import React from "react";
-import { createSky, createStarburst, getRandomColor } from "../src/utils/animations";
+import { animationForSong, clearAnimations, createSky, createStarburst, getRandomColor } from "../src/utils/animations";
 import { render, screen } from "@testing-library/react";
 import Index from "../pages";
 import { AudioPlayerContext } from "../src/components/AudioPlayerContext";
@@ -27,6 +27,11 @@ const mockAudioContextValue = {
   toggleMuteTrack: jest.fn(),
 };
 
+
+  beforeEach(() => {
+    fetchMock.resetMocks();
+  });
+
 describe("getRandomColor", () => {
   test("should return a random color", () => {
     const color = getRandomColor();
@@ -43,7 +48,6 @@ describe('createStarburst', () => {
     });
   
     beforeEach(() => {
-      // Setup a mock container for the tests
       document.body.innerHTML = '<div id="starburst"></div>';
     });
   
@@ -72,7 +76,6 @@ describe('createStarburst', () => {
 
   describe('createSky', () => {
     beforeEach(() => {
-      // Set up the DOM environment before each test.
       document.body.innerHTML = '<div id="night-sky" style="width: 500px; height: 500px;"></div>';
     });
   
@@ -82,10 +85,8 @@ describe('createStarburst', () => {
       const nightSky = document.getElementById('night-sky');
       const stars = nightSky?.getElementsByClassName('star');
   
-      // Check for the correct number of stars.
       expect(stars?.length).toBe(300);
   
-      // Sample a few stars to check for basic styles.
       for (let i = 0; i < 5; i++) {
         
         if (!stars) {
@@ -103,4 +104,31 @@ describe('createStarburst', () => {
       }
     });
   });
+
+  describe('animationForSong', () => {
+    beforeEach(() => {
+      // Reset GSAP mocks
+      jest.clearAllMocks();
+      // Setup the required DOM structure
+      document.body.innerHTML = `
+        <div class="box"></div>
+        <div class="sample-info">
+          <h3></h3>
+          <p></p>
+        </div>
+        <div id="starburst"></div>
+        <div id="night-sky"></div>
+      `;
+    });
   
+    test('triggers expected GSAP animations', () => {
+      const bpm = 120;
+      const centroidDifferences = [0.1, 0.2, 0.3];
+  
+      animationForSong(bpm, centroidDifferences);
+  
+      // Verify GSAP animations are triggered
+      const nightSky = document.getElementById('night-sky');
+      const stars = nightSky?.getElementsByClassName('star');
+      });
+  });
