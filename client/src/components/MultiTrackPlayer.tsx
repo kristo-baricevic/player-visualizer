@@ -116,6 +116,7 @@ const MultiTrackPlayer = () => {
               <div
                 className="progress-container flex"
                 ref={progressContainerRef}
+                data-testid="progressContainer"
                 onClick={handleProgressClick}
                 >
                 <div
