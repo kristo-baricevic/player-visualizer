@@ -1,10 +1,11 @@
 import React from "react";
-import { createStarburst, getRandomColor } from "../src/utils/animations";
+import { createSky, createStarburst, getRandomColor } from "../src/utils/animations";
 import { render, screen } from "@testing-library/react";
 import Index from "../pages";
 import { AudioPlayerContext } from "../src/components/AudioPlayerContext";
 import { Provider } from "react-redux";
 import store from "../src/store";
+import gsap from "gsap";
 import fetchMock from "jest-fetch-mock";
 fetchMock.enableMocks();
 
@@ -59,7 +60,7 @@ describe('createStarburst', () => {
     });
   
     test('handles missing container by logging error', () => {
-      document.body.innerHTML = ''; // Remove the starburst container
+      document.body.innerHTML = '';
       const consoleErrorSpy = jest.spyOn(console, 'error');
   
       createStarburst(5, 0.1, [0.5, 0.2]);
@@ -67,5 +68,39 @@ describe('createStarburst', () => {
       expect(consoleErrorSpy).toHaveBeenCalledWith("Error in createStarburst:", expect.any(Error));
     });
   
+  });
+
+  describe('createSky', () => {
+    beforeEach(() => {
+      // Set up the DOM environment before each test.
+      document.body.innerHTML = '<div id="night-sky" style="width: 500px; height: 500px;"></div>';
+    });
+  
+    test('creates 300 stars with basic styles and adds them to the night-sky container', () => {
+      createSky();
+  
+      const nightSky = document.getElementById('night-sky');
+      const stars = nightSky?.getElementsByClassName('star');
+  
+      // Check for the correct number of stars.
+      expect(stars?.length).toBe(300);
+  
+      // Sample a few stars to check for basic styles.
+      for (let i = 0; i < 5; i++) {
+        
+        if (!stars) {
+            return;
+        }
+        const star = stars[i] as HTMLElement; 
+        expect(star).toHaveClass('star');
+        expect(star.style.backgroundColor).toBeDefined;
+
+        // Since size and position are random, you might just check they are set.
+        expect(star.style.width).toBeTruthy();
+        expect(star.style.height).toBeTruthy();
+        expect(star.style.left).toBeTruthy();
+        expect(star.style.top).toBeTruthy();
+      }
+    });
   });
   
