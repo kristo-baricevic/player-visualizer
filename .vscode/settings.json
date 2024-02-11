@@ -6,6 +6,7 @@
         "gsap",
         "nocheck",
         "reduxjs",
-        "tailwindcss"
+        "tailwindcss",
+        "testid"
     ]
 }

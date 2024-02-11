@@ -130,6 +130,7 @@ const MultiTrackPlayer = () => {
             <div className="navigation">
               <button
                 ref={prevBtnRef}
+                data-testid="prevSongBtn"
                 className="action-btn"
                 onClick={prevSongHandler}
               >
@@ -137,6 +138,7 @@ const MultiTrackPlayer = () => {
               </button>
               <button
                 ref={playBtnRef}
+                data-testid="playPauseBtn"
                 className="action-btn action-btn-big"
                 onClick={handleClickPlayPause}
               >
@@ -148,6 +150,7 @@ const MultiTrackPlayer = () => {
               </button>
               <button
                 ref={nextBtnRef}
+                data-testid="nextSongBtn"
                 className="action-btn"
                 onClick={nextSongHandler}
               >

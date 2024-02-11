@@ -41,9 +41,6 @@ describe("Index", () => {
         </AudioPlayerContext.Provider>
       </Provider>
     );
-
-    // Example of waiting for an element to appear as a result of an async operation
-    // await waitFor(() => expect(screen.getByTestId("some-element-id")).toBeInTheDocument());
   });
 
   it("handles fetch error correctly", async () => {
@@ -57,7 +54,5 @@ describe("Index", () => {
       </Provider>
     );
 
-    // Example of waiting for an error message or some indication of fetch failure
-    // await waitFor(() => expect(screen.getByText("Error message or fallback UI")).toBeInTheDocument());
   });
 });
